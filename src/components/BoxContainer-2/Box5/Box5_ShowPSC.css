@@ -1,0 +1,16 @@
+.Show-PSC-GUI {
+  background-color: #ddc3a5;
+  height: 400px;
+  width: 300px;
+  margin: 8px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 5px 5px 5px #201e20;
+  font-family: Oswald;
+  font-size: 28px;
+}
+
+.Show-PSC-GUI:hover {
+  box-shadow: 0 12px 16px 0 rgba(93, 0, 255, 0.24),
+    0 17px 50px 0 rgba(93, 0, 255, 0.24);
+}

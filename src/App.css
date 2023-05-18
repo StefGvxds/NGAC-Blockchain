@@ -1,0 +1,44 @@
+body {
+  /* background-color: #201E20; */
+  background-image: url("components/image/square.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#metaMaskButton {
+  width: 150px;
+  height: 35px;
+  font-family: Oswald;
+  font-size: 20px;
+  margin-top: 0px;
+  margin-left: 14px;
+  margin-right: 0;
+  background-color: #504b50;
+  border-radius: 8px;
+  text-align: center;
+  color: antiquewhite;
+}
+
+#metaMaskButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  color: antiquewhite;
+}
+
+#metaMaskButton:active {
+  transform: scale(0.98);
+  /* Scaling button to 0.98 to its original size */
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  /* Lowering the shadow */
+}
+
+#toptop {
+  display: flex;
+  margin-bottom: 0px;
+}
+
+#wallet{
+  text-align: left;
+  margin-top: 0px;
+  margin-left: 14px;
+}

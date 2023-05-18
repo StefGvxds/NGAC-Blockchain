@@ -1,0 +1,62 @@
+.contractBox {
+  font-family: Oswald;
+  font-size: 14px;
+  display: block;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  margin-bottom: 5px;
+  background-color: #504b50;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 8px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+}
+
+#title {
+  margin-top: 1px;
+  margin-bottom: -25px;
+  font-weight: bold;
+  text-align: left;
+  color: antiquewhite;
+}
+
+#txt{
+  margin-top: 0px;
+  margin-bottom: -20px; 
+  /* line-height: 0; */
+  text-align: center;
+  display:block;
+  color: antiquewhite;
+}
+
+#attrShow{
+  margin-top: 0px;
+  margin-bottom: -8px; 
+  text-align: center;
+  display:block;
+  color: antiquewhite;
+}
+
+#closeOpenBottom{
+  margin-top: 0px;
+  margin-bottom: -18px; 
+  /* line-height: 0; */
+  text-align: center;
+  display:block;
+}
+
+#closeOpenTop{
+  margin-top: -15px;
+  margin-bottom: -25px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.contractBox:hover {
+  box-shadow: 2px 2px 2px 2px rgba(11, 3, 25, 0.63),
+    2px 2px 2px 2px rgba(93, 0, 255, 0.24);
+}

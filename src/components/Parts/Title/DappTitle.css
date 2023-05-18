@@ -1,0 +1,17 @@
+#webTitleBox {
+  background-color: #ddc3a5;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  height: 40px;
+  box-shadow: 5px 5px 5px rgb(79, 77, 77);
+}
+
+#webTitle {
+  color: #201e20;
+  font-family: Oswald;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 28px;
+}
