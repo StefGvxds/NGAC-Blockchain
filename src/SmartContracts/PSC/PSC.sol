@@ -1,12 +1,30 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
-//Allows us to use the comamnd console.log();
-import "hardhat/console.sol";
-
 import "./DATSC.sol";
 
+//_______________________________TEST REASONS LIBRARY____________________________//
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 contract PSC {
+    //________________________________TEST REASONS_____________________________________________________//
+    using Strings for string;
+    using Strings for uint256;
+
+    string com = "--";
+    string eq = "==";
+
+    string test1;
+    // string test2;
+
+    // string test3;
+    // string test4;
+    // string test5;
+    // string test6;
+    // string test7;
+    // string test8;
+    //________________________________TEST REASONS_____________________________________________________//
+
     //DATSC interface declaration
     DATSC public datsc;
     //__________________________________Constructor_________________________________//
@@ -21,7 +39,7 @@ contract PSC {
     constructor() {
         owner = msg.sender;
         //Saves the address  of the creator from this contract
-        address datscAddress = 0x4CE368922207c786F69D03C281E832e9359387c3;
+        address datscAddress = 0x76435372cCF7f934C9c52ff30ee2A950D631bBad;
         datsc = DATSC(datscAddress);
     }
 
@@ -378,104 +396,69 @@ contract PSC {
         }
 
         //The inputarrays cant be emty
-        if (
-            attrNames.length == 0 ||
-            attrValues.length == 0 ||
-            assignment_AttrA_name.length == 0 ||
-            assignment_AttrA_value.length == 0 ||
-            assignment_AttrB_name.length == 0 ||
-            assignment_AttrB_value.length == 0 ||
-            association_AttrA_name.length == 0 ||
-            association_AttrA_value.length == 0 ||
-            association_AccessRights.length == 0 ||
-            association_AttrB_name.length == 0 ||
-            association_AttrB_value.length == 0
-        ) {
-            errorfeedback = "Some of the inputfields is emty";
-            require(attrNames.length != 0, errorfeedback);
-            require(attrValues.length != 0, errorfeedback);
-            require(assignment_AttrA_name.length != 0, errorfeedback);
-            require(assignment_AttrA_value.length != 0, errorfeedback);
-            require(assignment_AttrB_name.length != 0, errorfeedback);
-            require(assignment_AttrB_value.length != 0, errorfeedback);
-            require(association_AttrA_name.length != 0, errorfeedback);
-            require(association_AttrA_value.length != 0, errorfeedback);
-            require(association_AccessRights.length != 0, errorfeedback);
-            require(association_AttrB_name.length != 0, errorfeedback);
-            require(association_AttrB_value.length != 0, errorfeedback);
+        uint256[11] memory arraylength = [
+            attrNames.length,
+            attrValues.length,
+            assignment_AttrA_name.length,
+            assignment_AttrA_value.length,
+            assignment_AttrB_name.length,
+            assignment_AttrB_value.length,
+            association_AttrA_name.length,
+            association_AttrA_value.length,
+            association_AccessRights.length,
+            association_AttrB_name.length,
+            association_AttrB_value.length
+        ];
+        errorfeedback = "Some of the inputfields is emty";
+        for (uint256 i = 0; i < arraylength.length; i++) {
+            checkArrayNotEmpty(arraylength[i], errorfeedback);
         }
 
-        //To create an Attribute we need name and value so the both strings have to be equal
-        if (attrNames.length != attrValues.length) {
-            errorfeedback = "Attribute names and values Array must have the same length (executePSC)";
-            require(attrNames.length == attrValues.length, errorfeedback);
-        }
+        // To create an Attribute we need name and value so the both strings have to be equal
+        checkArrayLengths(
+            attrNames,
+            attrValues,
+            "Attribute names and values Array must have the same length (executePSC)"
+        );
 
-        //Compare arrays from Assignment to check that there will be no error in creation
-        //attrA name and value check
-        if (assignment_AttrA_name.length != assignment_AttrA_value.length) {
-            errorfeedback = "AttributeA names and values must have the same length (executePSC - assignment)";
-            require(
-                assignment_AttrA_name.length == assignment_AttrA_value.length,
-                errorfeedback
-            );
-        }
+        // Compare arrays from Assignment to check that there will be no error in creation
+        checkArrayLengths(
+            assignment_AttrA_name,
+            assignment_AttrA_value,
+            "AttributeA names and values must have the same length (executePSC - assignment)"
+        );
+        checkArrayLengths(
+            assignment_AttrB_name,
+            assignment_AttrB_value,
+            "AttributeB names and values must have the same length (executePSC)"
+        );
+        checkArrayLengths(
+            assignment_AttrA_name,
+            assignment_AttrB_name,
+            "AttributeA and AttributeB must have the same length (executePSC)"
+        );
 
-        //attrB name and value check
-        if (assignment_AttrB_name.length != assignment_AttrB_value.length) {
-            errorfeedback = "AttributeB names and values must have the same length (executePSC)";
-            require(
-                assignment_AttrB_name.length == assignment_AttrB_value.length,
-                errorfeedback
-            );
-        }
-
-        //attrA and attrB check
-        if (assignment_AttrA_name.length != assignment_AttrB_name.length) {
-            errorfeedback = "AttributeA  and AttributeB must have the same length (executePSC)";
-            require(
-                assignment_AttrA_name.length == assignment_AttrB_name.length,
-                errorfeedback
-            );
-        }
-
-        //Compare arrays from Association to check that there will be no error in creation
-        //attrA name and value check
-        if (association_AttrA_name.length != association_AttrA_value.length) {
-            errorfeedback = "AttributeA names and values must have the same length (executePSC - association)";
-            require(
-                association_AttrA_name.length == association_AttrA_value.length,
-                errorfeedback
-            );
-        }
-
-        //attrB name and value check
-        if (association_AttrB_name.length != association_AttrB_value.length) {
-            errorfeedback = "AttributeB names and values must have the same length (executePSC)";
-            require(
-                association_AttrB_name.length == association_AttrB_value.length,
-                errorfeedback
-            );
-        }
-
-        //attrA and attrB check
-        if (association_AttrA_name.length != association_AttrB_name.length) {
-            errorfeedback = "AttributeA and AttributeB must have the same length (executePSC)";
-            require(
-                association_AttrA_name.length == association_AttrB_name.length,
-                errorfeedback
-            );
-        }
-
-        //attrA and accessRigt check
-        if (association_AttrA_name.length != association_AccessRights.length) {
-            errorfeedback = "AttributeA name and AccessRights must have the same length (executePSC)";
-            require(
-                association_AttrA_name.length ==
-                    association_AccessRights.length,
-                errorfeedback
-            );
-        }
+        // Compare arrays from Association to check that there will be no error in creation
+        checkArrayLengths(
+            association_AttrA_name,
+            association_AttrA_value,
+            "AttributeA names and values must have the same length (executePSC - association)"
+        );
+        checkArrayLengths(
+            association_AttrB_name,
+            association_AttrB_value,
+            "AttributeB names and values must have the same length (executePSC)"
+        );
+        checkArrayLengths(
+            association_AttrA_name,
+            association_AttrB_name,
+            "AttributeA and AttributeB must have the same length (executePSC)"
+        );
+        checkArrayLengths(
+            association_AttrA_name,
+            association_AccessRights,
+            "AttributeA name and AccessRights must have the same length (executePSC)"
+        );
 
         //create all attributes
         for (uint256 i = 0; i < attrNames.length; i++) {
@@ -518,6 +501,28 @@ contract PSC {
         //close PSC
         finalizePSC();
         createPrivileges();
+    }
+
+    //Check Array length
+    function checkArrayLengths(
+        string[] memory array1,
+        string[] memory array2,
+        string memory message
+    ) public {
+        if (array1.length != array2.length) {
+            errorfeedback = message;
+            require(array1.length == array2.length, errorfeedback);
+        }
+    }
+
+    //Check arrays not empty
+    function checkArrayNotEmpty(uint256 arraylength, string memory message)
+        public
+    {
+        if (arraylength == 0) {
+            errorfeedback = message;
+            require(arraylength != 0, errorfeedback);
+        }
     }
 
     //____________________________________GETTERS___________________________________//
@@ -787,29 +792,21 @@ contract PSC {
         string memory accessRight,
         string memory userAttributeName,
         string memory userAttributeValue
-    ) public view returns (bool finalAnswer) {
+    ) public returns (bool finalAnswer) {
+
         finalAnswer = false;
+        require(
+            attrName.length == attrValue.length,
+            "Attributes and Values have not the same length"
+        );
 
-        //CONSOLE
-        console.log("14. finalAnswer", finalAnswer);
-
-        //Create Array to save all attributes from RSCInstance
-        Attribute[] memory attRSCar = new Attribute[](attrName.length);
-        //Save all the attributes from RSCInstance
+        test1 = "";
         for (uint256 i = 0; i < attrName.length; i++) {
-            Attribute memory tmpAt;
-            tmpAt.name = attrName[i];
-            tmpAt.value = attrValue[i];
-            attRSCar[i] = tmpAt;
-        }
-
-        //Compare User Attributes and RSCInstance Attributes and AccessRight Every privilege
-        for (uint256 i = 0; i < attRSCar.length; i++) {
             for (uint256 j = 0; j < privileges.length; j++) {
                 if (
-                    keccak256(abi.encodePacked((attRSCar[i].name))) ==
+                    keccak256(abi.encodePacked((attrName[i]))) ==
                     keccak256(abi.encodePacked((privileges[j].attrB.name))) &&
-                    keccak256(abi.encodePacked((attRSCar[i].value))) ==
+                    keccak256(abi.encodePacked((attrValue[i]))) ==
                     keccak256(abi.encodePacked((privileges[j].attrB.value))) &&
                     keccak256(abi.encodePacked((accessRight))) ==
                     keccak256(abi.encodePacked((privileges[j].accessRight))) &&
@@ -818,10 +815,37 @@ contract PSC {
                     keccak256(abi.encodePacked((userAttributeValue))) ==
                     keccak256(abi.encodePacked((privileges[j].attrA.value)))
                 ) {
+                    test1 = string(abi.encodePacked(test1, attrName[i]));
+                    test1 = string(abi.encodePacked(test1, eq));
+                    test1 = string(abi.encodePacked(test1, privileges[j].attrB.name));
+
+                    test1 = string(abi.encodePacked(test1, attrValue[i]));
+                    test1 = string(abi.encodePacked(test1, eq));
+                    test1 = string(abi.encodePacked(test1, privileges[j].attrB.value));
+
+                    test1 = string(abi.encodePacked(test1, accessRight));
+                    test1 = string(abi.encodePacked(test1, eq));
+                    test1 = string(abi.encodePacked(test1, privileges[j].accessRight));
+
+                    test1 = string(abi.encodePacked(test1, userAttributeName));
+                    test1 = string(abi.encodePacked(test1, eq));
+                    test1 = string(abi.encodePacked(test1, privileges[j].attrA.name));
+
+                    test1 = string(abi.encodePacked(test1, userAttributeValue));
+                    test1 = string(abi.encodePacked(test1, eq));
+                    test1 = string(abi.encodePacked(test1, privileges[j].attrA.value));
+
                     finalAnswer = true;
-                    return finalAnswer;
+                    break;  
                 }
             }
         }
+        return finalAnswer;
+    }
+
+    //________________________________TEST REASONS_____________________________________________________//
+
+    function getTest1() public view returns (string memory) {
+        return test1;
     }
 }

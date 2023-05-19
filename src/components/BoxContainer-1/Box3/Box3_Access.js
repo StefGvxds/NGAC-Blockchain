@@ -29,13 +29,13 @@ function Box3_Access(props) {
 
       //If no ERROR execute access request
       if (callOK) {
-        setDecision(
-          await DSC.methods
-            .decision(uri, accessright, userAttributeName, userAttributeValue)
-            .send({ from: props.walletAddress })
-        );
-
-        if (decision == true) {
+        const decisionValue = await DSC.methods
+          .decision(uri, accessright, userAttributeName, userAttributeValue)
+          .call({ from: props.walletAddress });
+      
+        setDecision(decisionValue);
+      
+        if (decisionValue == true) {
           props.setMSG("Access succeed");
         } else {
           props.setMSG("Access denied");

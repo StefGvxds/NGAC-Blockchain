@@ -6,6 +6,9 @@ import "./DATSC.sol";
 import "./PSC.sol";
 import "./RSC.sol";
 
+//_______________________________TEST REASONS LIBRARY____________________________//
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 //Allows us to use the comamnd console.log();
 import "hardhat/console.sol";
 
@@ -23,6 +26,20 @@ contract DSC {
     PSC pscInstance;
     RSC rscInstance;
 
+    //__________________________________VARIABLES FOR TESTING_____________________________________________//
+    using Strings for string;
+    using Strings for uint256;
+
+    string com = "--";
+
+    bool test1;
+    address test2;
+    address test3;
+    string test4;
+    string test5;
+    bool test6;
+    //____________________________________________________________________________________________________//
+
     //RSC INSTANCE (RESOURCE)
     struct Attribute {
         string name;
@@ -39,7 +56,7 @@ contract DSC {
     //Saves the address  of the creator from this contract
     constructor() {
         owner = msg.sender;
-        address datscAddress = 0x4CE368922207c786F69D03C281E832e9359387c3;
+        address datscAddress = 0x76435372cCF7f934C9c52ff30ee2A950D631bBad;
         datscInstance = DATSC(datscAddress);
     }
 
@@ -51,84 +68,6 @@ contract DSC {
         _;
     }
 
-    //____________________________________Functions__________________________________//
-
-    //Converts String to address
-    // function parseAddr(string memory _a)
-    //     public
-    //     pure
-    //     returns (address _parsedAddress)
-    // {
-    //     bytes memory tmp = bytes(_a);
-    //     uint160 iaddr = 0;
-    //     uint160 b1;
-    //     uint160 b2;
-    //     for (uint256 i = 2; i < 2 + 2 * 20; i += 2) {
-    //         iaddr *= 256;
-    //         b1 = uint160(uint8(tmp[i]));
-    //         b2 = uint160(uint8(tmp[i + 1]));
-    //         if ((b1 >= 97) && (b1 <= 102)) {
-    //             b1 -= 87;
-    //         } else if ((b1 >= 65) && (b1 <= 70)) {
-    //             b1 -= 55;
-    //         } else if ((b1 >= 48) && (b1 <= 57)) {
-    //             b1 -= 48;
-    //         }
-    //         if ((b2 >= 97) && (b2 <= 102)) {
-    //             b2 -= 87;
-    //         } else if ((b2 >= 65) && (b2 <= 70)) {
-    //             b2 -= 55;
-    //         } else if ((b2 >= 48) && (b2 <= 57)) {
-    //             b2 -= 48;
-    //         }
-    //         iaddr += (b1 * 16 + b2);
-    //     }
-    //     return address(iaddr);
-    // }
-
-    // //SAVE PSC ADDRESS
-    // function getPSC() public {
-    //     string memory result = datscInstance.getPSC();
-    //     if (bytes(result).length == 0) {
-    //         emit ErrorMSG("There is no PSC");
-    //     } else {
-    //         // address pscAddress = address(
-    //         //     uint160(uint256(keccak256(abi.encodePacked(result))))
-    //         // );
-    //         address pscAddress = parseAddr(result);
-    //         pscInstance = PSC(pscAddress);
-    //         emit ErrorMSG(result);
-    //     }
-    // }
-
-    // //SAVE RSC ADDRESS
-    // function getRSC() public returns (string memory) {
-    //     string memory result = datscInstance.getRSC();
-    //     if (bytes(result).length == 0) {
-    //         emit ErrorMSG("There is no PSC");
-    //         return result = "emty";
-    //     } else {
-    //         // address rscAddress = address(
-    //         //     uint160(uint256(keccak256(abi.encodePacked(result))))
-    //         // );
-
-    //         address rscAddress = parseAddr(result);
-    //         rscInstance = RSC(rscAddress);
-    //         emit ErrorMSG(result);
-    //         return result;
-    //     }
-    // }
-
-    //____________________________________Getters__________________________________//
-
-    // function showPSCAddr() public view returns (PSC) {
-    //     return pscInstance;
-    // }
-
-    // function showRSCAddr() public view returns (address) {
-    //     return address(rscInstance);
-    // }
-
     //_______________________START DESSICION__________________________________//
     function decision(
         string memory uri,
@@ -139,8 +78,15 @@ contract DSC {
         //string memory accessResult;
         bool decisionAnswer = false;
 
+        //_____________TEST1_______________// GET decisionAnswer input
+        test1 = decisionAnswer;
+
         //1. Get RSC address from URI input (DATSC getRSCFromURI)
         address rscAddress = datscInstance.getRSCFromURI(uri);
+
+        //_____________TEST2_______________// GET RSC Address
+        test2 = address(0);
+        test2 = rscAddress;
 
         //Check RSC address NOT NULL
         require(rscAddress != address(0), "URI NOT Found (Can't Load RSC)");
@@ -150,13 +96,34 @@ contract DSC {
         //2. Get PSC address from URI input (DATSC getPSCFromURI)
         address pscAddress = datscInstance.getPSCFromURI(uri);
 
+        //_____________TEST3_______________// GET PSC Address
+        test3 = address(0);
+        test3 = pscAddress;
+
         //Check PSC address NOT NULL
         require(pscAddress != address(0), "URI NOT Found (Can't Load PSC)");
         //Set PSC address
         pscInstance = PSC(pscAddress);
 
         //3. Send All Information to get ANSWER!!!
-        (string[] memory attriRSCname, string[] memory attriRSCvalue) = rscInstance.getRSCInstance(uri);
+        (
+            string[] memory attriRSCname,
+            string[] memory attriRSCvalue
+        ) = rscInstance.getRSCInstance(uri);
+
+        //_____________TEST4_______________// GET attriRSCname
+        test4 ="";
+        for (uint256 i = 0; i < attriRSCname.length; i++) {
+            test4 = string(abi.encodePacked(test4, com));
+            test4 = string(abi.encodePacked(test4, attriRSCname[i]));
+        }
+
+        //_____________TEST5_______________// GET attriRSCvalue
+        test5 ="";
+        for (uint256 i = 0; i < attriRSCvalue.length; i++) {
+            test5 = string(abi.encodePacked(test5, com));
+            test5 = string(abi.encodePacked(test5, attriRSCvalue[i]));
+        }
 
         require(attriRSCname.length != 0, "No Attributes Found");
 
@@ -173,32 +140,36 @@ contract DSC {
             userAttributeValue
         );
 
-        return (decisionAnswer);
+        //_____________TEST6_______________// GET last decision anwer
+        test6 = false;
+        test6 = decisionAnswer;
+
+        return decisionAnswer;
     }
 
-    //ALL DECISION FUNCTION FOR TEST REASONS AS GETTER!!!
-    function desGetRSCADDRESS(string memory uri) public view returns (address) {
-        address rscAddress = datscInstance.getRSCFromURI(uri);
-        return rscAddress;
+    //________________________________GETTERS FOR TESTREASON_____________________________________________//
+    function getTest1() public view returns (bool) {
+        return test1;
     }
 
-    function desGetPSCADDRESS(string memory uri) public view returns (address) {
-        address pscAddress = datscInstance.getPSCFromURI(uri);
-        return pscAddress;
+    function getTest2() public view returns (address) {
+        return test2;
     }
 
-    function desGetAllAttributes(string memory uri)
-        public
-        returns (string[] memory, string[] memory)
-    {
-        address rsc = desGetRSCADDRESS(uri);
-        //address psc = desGetPSCADDRESS(uri);
-        rscInstance = RSC(rsc);
-        //pscInstance = PSC(psc);
-        (
-            string[] memory attriRSCname,
-            string[] memory attriRSCvalue
-        ) = rscInstance.getRSCInstance(uri);
-        return (attriRSCname, attriRSCvalue);
+    function getTest3() public view returns (address) {
+        return test3;
     }
+
+    function getTest4() public view returns (string memory) {
+        return test4;
+    }
+
+    function getTest5() public view returns (string memory) {
+        return test5;
+    }
+
+    function getTest6() public view returns (bool) {
+        return test6;
+    }
+
 }
