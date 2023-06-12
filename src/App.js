@@ -47,25 +47,11 @@ function App() {
   }, [pscInstance]);
 
   //_________________________________________SET PRIVILEGES_________________?
-
   const [privilegess, setprivilegess] = useState([]);
-  // const getprivilegess = async (privilegess) => {
-  //   setprivilegess(pscInstance);
-  //   console.log("APP");
-  //   console.log(privilegess);
-  // };
-
-  // useEffect(() => {
-  //   console.log(pscInstance);
-  // }, [pscInstance]);
 
   //___________________________________GET PSC, RSC ADDRESS______________________________________//
   const [RSCaddr, setRSCaddr] = useState("");
   const [PSCaddr, setPSCaddr] = useState("");
-
-
-
-
 
   //_________________________________________Connect to MetaMask__________________________
   const [provider, setProvider] = useState("");
@@ -98,9 +84,13 @@ function App() {
     }
   };
 
+  //Is Metamask installed?
+  const [metamaskInstalled, setMetamaskInstalled] = useState(false);
+
   //Listen to changes if the Provider or the walletAddress are changed
   useEffect(() => {
     if (window.ethereum) {
+      setMetamaskInstalled(true);
       // Listen for provider changes
       window.ethereum.on("chainChanged", () => {
         //setWeb3(new Web3(window.ethereum));
@@ -111,25 +101,16 @@ function App() {
       window.ethereum.on("accountsChanged", (accounts) => {
         setWalletAddress(accounts[0]);
       });
+    } else {
+      setMetamaskInstalled(false);
+      setMsg("Please Install Metamask!");
     }
   }, []);
 
-  //___________________TAKE RSC DATA AND --> BoxContainer2__________________________
-  // const [rscADDR, setrscADDR] = useState("");
-  // const [rscURI, setrscURI] = useState("");
-  // const [rscATTR, setrscATTR] = useState("");
-
-  // const addRSCToBoxContainer2 = (
-  //   contractAddress,
-  //   contractURI,
-  //   contractAttr
-  //   //contractClosed
-  // ) => {
-  //   setrscADDR(contractAddress);
-  //   setrscURI(contractURI);
-  //   setrscATTR(contractAttr);
-  //   //setrscCLOSED(contractClosed);
-  // };
+  //When MetaMask is not installed show ErrorMSG
+  if (!metamaskInstalled) {
+    return <DappMessage setMSG={errmsg} />;
+  }
 
   //_________________________________________________________RETURN__________________________
   return (
@@ -163,7 +144,6 @@ function App() {
           setPSCaddr={setPSCaddr}
           //Update REACT
           updateCounter={updateCounter}
-
         />
         <BoxContainer_2
           //rscADDR={rscADDR}
@@ -177,7 +157,6 @@ function App() {
           PSCaddr={PSCaddr}
           //Privileges
           privilegess={privilegess}
-
           //Update REACT
           updateCounter={updateCounter}
         />
