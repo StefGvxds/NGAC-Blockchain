@@ -1,59 +1,67 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
-//import Smart Contracts
+// Import the necessary Smart Contracts
 import "./DATSC.sol";
 import "./PSC.sol";
 import "./RSC.sol";
 
 //_______________________________TEST REASONS LIBRARY____________________________//
+// Import OpenZeppelin library for string and uint manipulations
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-//Allows us to use the comamnd console.log();
+// Import hardhat for debugging
 import "hardhat/console.sol";
 
 contract DSC {
     //__________________________________Constructor_________________________________//
 
-    //variable to save the address  of the creator from this contract
+    // Declare the contract owner address
     address private owner;
 
-    //Errormessage
+    // Define an event for error messages
     event ErrorMSG(string message);
 
-    //Declaration of instance
+    // Create instances for the imported Smart Contracts
     DATSC datscInstance;
     PSC pscInstance;
     RSC rscInstance;
 
     //__________________________________VARIABLES FOR TESTING_____________________________________________//
+    // Using the OpenZeppelin Strings library for string and uint256 types
     using Strings for string;
     using Strings for uint256;
 
+    // Variables for testing purposes
     string com = "--";
-
     bool test1;
     address test2;
     address test3;
     string test4;
     string test5;
     bool test6;
+    
     //____________________________________________________________________________________________________//
 
-    //RSC INSTANCE (RESOURCE)
+    // Define a struct for RSC attributes
     struct Attribute {
         string name;
         string value;
     }
-    //Attribute[] public Attributes;
+
+    // Define a struct for RSC instances
     struct RSCInstance {
         string uri;
         Attribute[] Attributes;
     }
+
+    // Array to store all RSC instances
     RSCInstance[] public allRSCInstances;
+
+    // Create an instance of the RSCInstance struct
     RSCInstance rscInst;
 
-    //Saves the address  of the creator from this contract
+    // Constructor for the contract, sets the contract owner and initializes DATSC instance
     constructor() {
         owner = msg.sender;
         address datscAddress = 0x76435372cCF7f934C9c52ff30ee2A950D631bBad;
@@ -62,13 +70,15 @@ contract DSC {
 
     //____________________________________Modifiers__________________________________//
 
-    //Only the creator of this PSC can call this function
+    // Modifier to restrict function access to only the contract owner
     modifier restricted() {
         require(msg.sender == owner, "You are not the Owner");
         _;
     }
 
     //_______________________START DESSICION__________________________________//
+
+    // Main decision function 
     function decision(
         string memory uri,
         string memory accessRight,
@@ -90,6 +100,7 @@ contract DSC {
 
         //Check RSC address NOT NULL
         require(rscAddress != address(0), "URI NOT Found (Can't Load RSC)");
+        
         //Set RSC address
         rscInstance = RSC(rscAddress);
 
@@ -132,6 +143,7 @@ contract DSC {
             "attriRSCname and attriRSCvalue have not the same length"
         );
 
+        //// Get the decision answer from PSC
         decisionAnswer = pscInstance.getAttrBFromAttrAssignments(
             attriRSCname,
             attriRSCvalue,
@@ -144,6 +156,7 @@ contract DSC {
         test6 = false;
         test6 = decisionAnswer;
 
+        //Return the decision answer
         return decisionAnswer;
     }
 

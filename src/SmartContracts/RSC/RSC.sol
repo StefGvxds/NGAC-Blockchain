@@ -169,11 +169,6 @@ contract RSC {
         return combinedResults;
     }
 
-    //GET RSC Instances array
-    // function getAllRSCInsta() public view returns (RSCInstance[] memory) {
-    //     return allRSCInstances;
-    // }
-
     //CALL FROM DSC
     //Get Attributes as string array
     function getRSCInstance(string memory uri)

@@ -1,32 +1,29 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
+// Import DATSC (Data Smart Contract)
 import "./DATSC.sol";
 
 //_______________________________TEST REASONS LIBRARY____________________________//
+// Import OpenZeppelin library for string and uint manipulations
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract PSC {
     //________________________________TEST REASONS_____________________________________________________//
+    // Using the OpenZeppelin Strings library for string and uint256 types
     using Strings for string;
     using Strings for uint256;
 
+    // Declare some string constants for output
     string com = "--";
     string eq = "==";
 
     string test1;
-    // string test2;
-
-    // string test3;
-    // string test4;
-    // string test5;
-    // string test6;
-    // string test7;
-    // string test8;
     //________________________________TEST REASONS_____________________________________________________//
 
-    //DATSC interface declaration
+    //DATSC instance for imported DATSC
     DATSC public datsc;
+
     //__________________________________Constructor_________________________________//
 
     //variable to save the address  of the creator from this contract
@@ -71,7 +68,8 @@ contract PSC {
         Attribute attrB;
     }
 
-    //This PSC contract holds an PSC instance. When we want to change it the currentPSC instace will update
+    //This PSC contract holds an PSC instance. 
+    //When we want to change it the currentPSC instace will update
     struct currentPSC {
         Attribute[] attributes;
         Assignment[] assignments;
@@ -91,9 +89,7 @@ contract PSC {
     //PSC INSTANCE
     currentPSC curPSC;
 
-    //Check if an Attribute already exists;
-    //**old**mapping(string => bool) checkDoubleAttributes;
-    //NEW check if an Attr exist already. **update** check attrname and attrvalue
+    //Check if an Attribute already exists; check attrname and attrvalue
     mapping(string => bool) checkDoubleAttributes;
 
     //Checks if an Association already exists
@@ -112,11 +108,14 @@ contract PSC {
     uint256 finalizeFlag = 0;
 
     //___________________________ErrorMessage Function___________________________________________//
+    
+    // Function to concatenate two strings
     function concatenate(string memory a, string memory b)
         internal
         pure
         returns (string memory)
     {
+        // Combines input strings 'a' and 'b' and returns the result
         return string(abi.encodePacked(a, b));
     }
 
@@ -133,7 +132,7 @@ contract PSC {
             require(finalizeFlag == 0, errorfeedback);
         }
 
-        //Check if the Attribute exists alrady **update**
+        //Check if the Attribute exists alrady
         string memory chckAttr = string(abi.encodePacked(attrName, attrValue));
         if (checkDoubleAttributes[chckAttr] == true) {
             errorfeedback = concatenate(
@@ -197,6 +196,7 @@ contract PSC {
                 "You can't put in a Assignment the same attribute twice (addAssignment): ",
                 chckAttrA
             );
+
             require(
                 keccak256(abi.encodePacked(attrA.name)) !=
                     keccak256(abi.encodePacked(attrB.name)) ||
@@ -252,7 +252,8 @@ contract PSC {
 
     Association tmpAssociation;
 
-    //Function to add a new Association to Associations Array (use this as input to create a policyClass)
+    //Function to add a new Association to Associations Array 
+    // (use this as input to create a policyClass)
     function addAssociation(
         Attribute memory attrA,
         string memory accessRight,
@@ -496,14 +497,17 @@ contract PSC {
             );
         }
 
-        //Save PSC to DATSC
+        //Save Created Policy and the owneraddress in DATSC 
         datsc.addPSCTOSENDER(msg.sender, address(this));
-        //close PSC
+        //close PSC (No changes allowed)
         finalizePSC();
+
+        // Creates all Priveleges like: 
+        //[Root UserAttribute, AccessRight (From Association), Root ObjectAttribute]
         createPrivileges();
     }
 
-    //Check Array length
+    //Compare the length of two Arrays
     function checkArrayLengths(
         string[] memory array1,
         string[] memory array2,
@@ -527,6 +531,7 @@ contract PSC {
 
     //____________________________________GETTERS___________________________________//
 
+    //Return recent Policyclass as string. We need it to keep the owner updated about his policyclass
     function getAllPSC() public view restricted returns (string memory) {
         string memory allPSC;
         string memory separator = "\n--------------------\n";
@@ -601,6 +606,7 @@ contract PSC {
     }
 
     // GET contract is open or closed
+    //(Shows if we can edit the Policy or not)
     function getClose() public view restricted returns (string memory) {
         string memory mesg;
         if (finalizeFlag == 1) {
@@ -612,14 +618,21 @@ contract PSC {
         }
     }
 
-    //Get Privileges
+    // Function to create and display privileges for the owner of the contract
     function createPrivileges() public {
+        
+        // Iterate over all the associations in the current PSC instance
         for (uint256 i = 0; i < curPSC.associations.length; i++) {
+
+            // Create a memory variable for the current association
             Association memory assoc = curPSC.associations[i];
 
+            // Get root attributes for the attributes in the current association
             Attribute[] memory rootsA = findRootAttributes(assoc.attrA);
             Attribute[] memory rootsB = findRootAttributes(assoc.attrB);
 
+            // For each pair of root attributes, if they're not present in attribute B
+            // create a new privilege and add it to the privileges array
             for (uint256 j = 0; j < rootsA.length; j++) {
                 for (uint256 k = 0; k < rootsB.length; k++) {
                     if (
@@ -638,6 +651,8 @@ contract PSC {
         }
     }
 
+    // This function checks if the given 'attr' attribute exists in the attrB field 
+    // of any assignment in the current Policy Smart Contract (PSC).
     function isAttributeInAttrB(Attribute memory attr)
         internal
         view
@@ -658,6 +673,7 @@ contract PSC {
         return false;
     }
 
+    // Function to find root attributes
     function findRootAttributes(Attribute memory attr)
         internal
         returns (Attribute[] memory)
@@ -665,8 +681,10 @@ contract PSC {
         bool found = false;
         Attribute[] memory roots;
 
+        // Iterate over all assignments in the current PSC instance
         for (uint256 i = 0; i < curPSC.assignments.length; i++) {
-            if (
+           // If the attribute in the assignment matches the input attribute, proceed
+           if (
                 keccak256(abi.encodePacked(curPSC.assignments[i].attrB.name)) ==
                 keccak256(abi.encodePacked(attr.name)) &&
                 keccak256(
@@ -681,7 +699,8 @@ contract PSC {
                 temp[0] = curPSC.assignments[i].attrA;
                 roots = mergeArrays(roots, temp);
 
-                // Find root attributes for the current attribute and merge the results
+                // Recursively find root attributes for the attribute A in the current assignment
+                // and merge the results into the roots array
                 Attribute[] memory newRoots = findRootAttributes(
                     curPSC.assignments[i].attrA
                 );
@@ -698,6 +717,7 @@ contract PSC {
         return roots;
     }
 
+    // Function to check if a specific attribute already exists in an attribute array
     function attributeExists(Attribute[] memory array, Attribute memory attr)
         internal
         pure
@@ -710,22 +730,27 @@ contract PSC {
                 keccak256(abi.encodePacked(array[i].value)) ==
                 keccak256(abi.encodePacked(attr.value))
             ) {
+                // If no match is found, return false
                 return true;
             }
         }
         return false;
     }
 
+    // Function to merge two arrays of attributes
     function mergeArrays(Attribute[] memory arrayA, Attribute[] memory arrayB)
         internal
         pure
         returns (Attribute[] memory)
     {
+        
+        // Create a temporary array with size equal to sum of input arrays
         Attribute[] memory temp = new Attribute[](
             arrayA.length + arrayB.length
         );
         uint256 index = 0;
 
+        // Add unique attributes from arrayA to the temporary array
         for (uint256 i = 0; i < arrayA.length; i++) {
             if (!attributeExists(temp, arrayA[i])) {
                 temp[index] = arrayA[i];
@@ -733,6 +758,7 @@ contract PSC {
             }
         }
 
+        // Add unique attributes from arrayB to the temporary array
         for (uint256 i = 0; i < arrayB.length; i++) {
             if (!attributeExists(temp, arrayB[i])) {
                 temp[index] = arrayB[i];
@@ -740,6 +766,8 @@ contract PSC {
             }
         }
 
+        // Create a result array with the size equal to the number of unique attributes
+        // and populate it with the attributes from the temporary array
         Attribute[] memory result = new Attribute[](index);
         for (uint256 i = 0; i < index; i++) {
             result[i] = temp[i];
