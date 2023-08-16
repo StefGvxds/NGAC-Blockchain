@@ -4,12 +4,10 @@ pragma solidity >=0.7.0 <0.9.0;
 // Import DATSC (Data Smart Contract)
 import "./DATSC.sol";
 
-//_______________________________TEST REASONS LIBRARY____________________________//
 // Import OpenZeppelin library for string and uint manipulations
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract PSC {
-    //________________________________TEST REASONS_____________________________________________________//
     // Using the OpenZeppelin Strings library for string and uint256 types
     using Strings for string;
     using Strings for uint256;
@@ -17,9 +15,6 @@ contract PSC {
     // Declare some string constants for output
     string com = "--";
     string eq = "==";
-
-    string test1;
-    //________________________________TEST REASONS_____________________________________________________//
 
     //DATSC instance for imported DATSC
     DATSC public datsc;
@@ -820,7 +815,7 @@ contract PSC {
         string memory accessRight,
         string memory userAttributeName,
         string memory userAttributeValue
-    ) public returns (bool finalAnswer) {
+    ) public view returns (bool finalAnswer) {
 
         finalAnswer = false;
         require(
@@ -828,7 +823,6 @@ contract PSC {
             "Attributes and Values have not the same length"
         );
 
-        test1 = "";
         for (uint256 i = 0; i < attrName.length; i++) {
             for (uint256 j = 0; j < privileges.length; j++) {
                 if (
@@ -843,37 +837,11 @@ contract PSC {
                     keccak256(abi.encodePacked((userAttributeValue))) ==
                     keccak256(abi.encodePacked((privileges[j].attrA.value)))
                 ) {
-                    test1 = string(abi.encodePacked(test1, attrName[i]));
-                    test1 = string(abi.encodePacked(test1, eq));
-                    test1 = string(abi.encodePacked(test1, privileges[j].attrB.name));
-
-                    test1 = string(abi.encodePacked(test1, attrValue[i]));
-                    test1 = string(abi.encodePacked(test1, eq));
-                    test1 = string(abi.encodePacked(test1, privileges[j].attrB.value));
-
-                    test1 = string(abi.encodePacked(test1, accessRight));
-                    test1 = string(abi.encodePacked(test1, eq));
-                    test1 = string(abi.encodePacked(test1, privileges[j].accessRight));
-
-                    test1 = string(abi.encodePacked(test1, userAttributeName));
-                    test1 = string(abi.encodePacked(test1, eq));
-                    test1 = string(abi.encodePacked(test1, privileges[j].attrA.name));
-
-                    test1 = string(abi.encodePacked(test1, userAttributeValue));
-                    test1 = string(abi.encodePacked(test1, eq));
-                    test1 = string(abi.encodePacked(test1, privileges[j].attrA.value));
-
                     finalAnswer = true;
                     break;  
                 }
             }
         }
         return finalAnswer;
-    }
-
-    //________________________________TEST REASONS_____________________________________________________//
-
-    function getTest1() public view returns (string memory) {
-        return test1;
     }
 }
