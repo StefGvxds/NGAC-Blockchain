@@ -1,12 +1,13 @@
-****Next Generation Access Control Based Access Control System with Ethereum Smart Contracts****
-
+Next Generation Access Control Based Access Control System with Ethereum Smart Contracts
+-------
 
 **Introduction**
 Ensuring authorized data access is crucial for maintaining the confidentiality and integrity of information. The design, analysis, and implementation of reliable systems that authorize specific users to access sensitive data are pivotal for creating secure information systems.
 
 
 
-**About the Project**
+About the Project
+-------
 This project delves into the study and analysis of the Next Generation Access Control (NGAC) access control model. Unlike other models where authorization and access policies are typically expressed using verbal rules, NGAC policies are developed using relations based on assignments, associations, prohibitions, and obligations. NGAC is characterized by its flexibility and can be utilized in a manner that allows or denies access based not only on the attributes of the objects but also on additional conditions such as time, location, etc.
 
 Furthermore, the potential of developing decentralized applications leveraging blockchain technologies, especially those provided by the Ethereum system, is explored.
@@ -37,7 +38,8 @@ These steps are crucial for anyone looking to modify the code in the smart contr
 
 
 
-***DApp User Guide***
+DApp User Guide
+-------
 1. Enter the command `npm start` to initiate the server and launch the DApp.
 2. To utilize the DApp, you need to sign in through MetaMask. Ensure you've installed the MetaMask extension in your browser and select "Connect Wallet" to link with MetaMask.1. Initial User Login
 3. First-time DApp users must deploy the PSC and RSC, while returning users will have the Smart Contracts loaded automatically.
@@ -68,7 +70,8 @@ The DSC re-examines these privileges, looking for a privilege that matches the u
 Finally, based on the result of the check, the DSC informs the user via the Front-end whether access to the requested object is allowed "Access succeed" or denied "Access denied".
 
 
-***Upcoming Features***
+Upcoming Features
+-------
 Obligations and Prohibitions: This upcoming feature will empower users to define specific actions that are required or forbidden within each policy. By incorporating obligations and prohibitions directly into policies, users will have finer control over access management and greater flexibility in setting permissions.
 
 
