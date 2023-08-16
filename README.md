@@ -14,14 +14,15 @@ Furthermore, the potential of developing decentralized applications leveraging b
 
 
 
-***DApp Transformation and Adaptation Guide***
+DApp Transformation and Adaptation Guide
+-------
 Welcome to the DApp Transformation and Adaptation Guide. This guide is specifically designed for developers aiming to modify and adapt the DApp, especially when it comes to the smart contracts: Decision Smart Contract (DSC), Resource Smart Contract (RSC), and Data Smart Contract (DATSC).
 
-Modifying the DApp:
-React Code:
+***Modifying the DApp:***
+***React Code:***
 Modifying the React code is straightforward and doesn't require additional steps from the developer.
 
-Smart Contracts:
+***Smart Contracts:***
 However, when it comes to altering the smart contracts, there are specific steps that need to be followed to ensure proper integration and functionality:
 
 1. Insert Smart Contract Code into Remix: Before starting the deployment, you need to insert the Smart Contract code, which is located in src > SmartContracts, into the Remix development environment. This allows you to deploy and manage the Smart Contracts directly from Remix.
