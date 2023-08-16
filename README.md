@@ -89,7 +89,8 @@ Under the following terms:
 
 
 
-***Contact Information***
+Contact Information
+-------
 Email: stef.gvxds@gmail.com
 
 
