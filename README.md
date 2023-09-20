@@ -70,6 +70,192 @@ The DSC then retrieves the privileges associated with this URI from the PSC.
 The DSC re-examines these privileges, looking for a privilege that matches the user's attribute, the access right the user is requesting, and the URI where the object the user is requesting access to is stored.
 Finally, based on the result of the check, the DSC informs the user via the Front-end whether access to the requested object is allowed "Access succeed" or denied "Access denied".
 
+Operation
+-------
+In NGAC, a policy is depicted with assignment and association relationships as a graph. Users and user attributes are located on the left side of the graph, while objects and object attributes are on the right side. Arrows represent assignment relationships, while dashed lines indicate associations. Collectively, associations and assignments indirectly determine the privileges of the form (user, access right, resource), meaning that the user 'user' has permission (or possesses a capability) to execute the access right 'access right' on the object 'object'. Verifying the existence of a privilege (a derived relationship) is a requirement for access decision computation. Access rights are indirectly determined through these relationships, resulting in the user having permission or the capability to execute access rights on specific objects.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/8b51bf50-0143-4556-9d0f-329f804d722c)
+
+Input Data for DApp
+-------
+The DApp includes an algorithm for detecting privileges based on user-defined policies. Below are the characteristics, privileges, assignments, and associations resulting from the above image.
+
+Characteristics:
+- User: User1
+- User: User2 Group: Group1
+- Group: Group2
+- Object: Object1
+- Object: Object2
+- Object: Object3
+- Project: Project1
+- Project: Project2
+- Project: Projects
+- Content: Secret
+- OrganisationUnit: Division
+
+Users User1 and User2 have the following privileges:
+- User1 can read Object1, write to Object2, read Object2, read Object3, and write to Object3.
+- User2 can write to Object1, read Object1, and read Object2.
+
+Privileges:
+- (User1, r, Object1)
+- (User1, w, Object2)
+- (User1, r, Object2)
+- (User1, r, Object3)
+- (User1, w, Object3)
+- (User2, w, Object1)
+- (User2, r, Object1)
+- (User2, r, Object2)
+
+Assignments of users and groups are as follows:
+- User1 belongs to Group1, and User2 belongs to Group2.
+- Group1 and Group2 belong to the Division category.
+- Object1 belongs to Project1, which in turn belongs to Projects.
+- Object2 belongs to Project2, which in turn belongs to Projects.
+- Object3 belongs to the Secret category.
+
+Assignments:
+- (User1, Group1)
+- (User2, Group2)
+- (Group1, Division)
+- (Group2, Division)
+- (Object1, Project1)
+- (Project1, Projects)
+- (Object2, Project2)
+- (Project2, Projects)
+- (Object3, Secret)
+
+Associations between groups and objects are as follows:
+- Group1 has write (w) permissions on Project2, read (r), and write (w) permissions on Secret.
+- Group2 has write (w) permissions on Project1.
+- The Division category has read (r) permissions on Projects.
+
+Associations:
+- (Group1, w, Project2)
+- (Group1, r, Secret)
+- (Group1, w, Secret)
+- (Group2, w, Project1)
+- (Division, r, Projects)
+
+User Login
+-------
+Upon entering the DApp, it is essential for the user to connect their electronic wallet by clicking the "Connect Wallet" button. To establish this connection, the prerequisite is the installation of the MetaMask extension in the web browser. When the user connects to the DApp via their electronic wallet, the wallet address is displayed on the screen. If the user is making their first entry into the DApp, they will need to deploy PSC and RSC. However, if the user has already deployed PSC and RSC, the Smart Contracts load automatically.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/1a089a13-7f42-44fc-9957-a6108539f98f)
+
+Development of RSC and PSC
+-------
+Initially, the user needs to deploy the PSC. In the "Create Policy" section, the user should click the "Deploy PSC" button. Once the message "PSC is Deployed! Please click on Save Deployed PSC!" appears, the user is prompted to save the PSC in the DATSC smart contract, which serves as a database, by clicking the "Save Deployed PSC" button.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/d6c104ce-66e0-432b-b33f-476d5e5a94a3)
+
+This process must be repeated for RSC, with the difference being that the development of RSC is carried out in the "Register Resource" section. In this case, the user should click the "Deploy RSC" and "Save Deployed RSC" buttons, respectively.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/81a0486e-cfca-4ebb-af61-6a41f87a57f4)
+
+Policy Definition
+-------
+To define policies, the user needs to input attributes, assignments, and associations, taking into account the following constraints:
+
+- Input fields should not be left blank.
+- PSC does not accept identical attributes (e.g., User:user1 and User:user1 are not allowed).
+- PSC requires at least two attributes.
+- The attributes added by the user in assignments and associations should already exist in the respective fields.
+- PSC does not accept identical assignments and associations.
+- An assignment and association should not contain two identical attributes.
+
+In this case, the user needs to input the data described above in "Input Data for DApp". Specifically, the user must:
+
+- Input names and attribute values in the respective fields.
+- Choose from the existing attributes those that will be used to create assignments.
+- Define access rights and select attributes for creating associations.
+
+To add more than two attributes, as well as more than one assignment and association, the user should click the "Add Attribute," "Add Assignment," and "Add Association" buttons, respectively. After the user has input all the attributes, assignments, and associations, they should click the "Create PSC" button to create and save the policy.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/92f2f7fb-2f9d-4968-966d-29f52a7951aa)
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/53349193-6514-4fc4-885e-afbbfaa0b928)
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/5438d738-a4ef-4740-9b5a-9867c05ed334)
+
+Once the policy is saved, it cannot be edited. To create a new policy, the user needs to develop a new PSC. 
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/ed559253-7ffb-4dfa-89b7-9c0ceb13b2c4)
+
+Immediately after creating the attributes, assignments, and associations of the PSC, the DApp generates the corresponding privileges.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/f54761d2-b2fa-4030-a117-127f5640a215)
+
+Register an object
+-------
+To register an object, you need to enter the URI where it is stored in the appropriate field, as well as its attributes. An object must have at least two attributes. In the implementation, the user is required to enter the attributes of the object, which have assignments associated with them. For example, the object "Object1" includes the attributes: (Object:Object1), (Project:Project1), and (Project:Projects).
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/37d495af-e7c7-4dd4-a518-c32e26035eb4)
+
+To complete the registration of an object, the user must click the "Create RSC" button. Once an object is created, it is displayed to the user and cannot be edited. However, it is possible to delete an object by entering the corresponding number assigned to the object in the table of stored objects and then pressing the "Delete RSC" button.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/76e6cd06-9a3b-48ef-81f9-92b26a40a3b4)
+
+Access Request
+-------
+To submit an access request for an object owned by another user, a user needs to enter their corresponding characteristic. For example, to obtain the privilege (User1, r, Object1) and gain access to Object1, the user must enter the characteristic User:User1. Additionally, the user is required to input the access right and the URI where the object is stored for which they want to request access.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/261c2c52-ef68-4f1e-b872-4160375304d7)
+
+By clicking the "Request Access" button, the DSC checks whether the user possesses the necessary access rights.
+
+Access Control System Response
+-------
+The access control process consists of the following steps:
+
+1. Initially, the DSC reads the URI contained in the user's access request. This URI is used to locate the corresponding PSC (Policy Specification Contract) in the DATSC database, which defines access policies for this URI.
+
+2. Next, the DSC retrieves the privileges associated with the specific URI from the PSC.
+
+3. The DSC then re-evaluates these privileges, searching for a privilege that matches the user's characteristic, the access right requested by the user, and the URI where the object the user is requesting access to is stored.
+
+4. Finally, based on the result of the evaluation, the DSC updates the user through the front-end, indicating whether access to the requested object is allowed ("Access succeed") or denied ("Access denied").
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/215231c5-f808-4f67-8cbb-d25c74597beb)
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/c8031d72-b388-46af-9b00-5759e97e97dd)
+
+Transformation and Adaptation Guide for DApp: Steps for Developers
+-------
+While modifying the React code does not require any additional steps from the developer, changing the smart contracts requires the implementation of various steps outlined in the code transformation diagram for smart contracts.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/1845cbbe-4239-45b7-985e-e56b83285171)
+
+The code transformation diagram requires the following steps:
+
+1. Deploy a new DATSC on REMIX so that the old database is no longer used.
+   
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/1f2da67c-85b4-4248-b581-622582eba300)
+
+2. Storing the new address of DATSC in the code of the contracts RSC, PSC, and DSC to make them interact with the new database.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/9297c708-8e66-4674-adca-2df3f19ce099)
+
+3. Saving the new ABI and the address of DATSC in the React code.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/b9742a8b-405c-40d8-8987-416da32253dc)
+
+4. Saving the new ABI and the bytecode of RSC in the React code.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/6efc5faa-66e9-4e04-8e1b-f1375f4187d5)
+
+5. Saving the new ABI and the bytecode of PSC in the React code.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/06c90552-b2eb-4040-a643-7140d51034c2)
+
+6. Developing a new DSC.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/ab0ea07f-01aa-43de-9861-a7abaf07fe50)
+
+7. Storing the new ABI  and the address of the DSC in the REACT code.
+
+![image](https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/74c3f043-66a2-4bcb-8865-c43f8941379d)
+
 
 Upcoming Features
 -------
