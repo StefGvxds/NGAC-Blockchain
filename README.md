@@ -221,6 +221,12 @@ The access control process consists of the following steps:
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/c8031d72-b388-46af-9b00-5759e97e97dd" width="500" height="300" />
 
+All Functions
+-------
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/aa2be44b-2987-4172-a57e-496adf64fb61" width=" 700" height="500" />
+
+
+
 Transformation and Adaptation Guide for DApp: Steps for Developers
 -------
 While modifying the React code does not require any additional steps from the developer, changing the smart contracts requires the implementation of various steps outlined in the code transformation diagram for smart contracts.
