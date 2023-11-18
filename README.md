@@ -223,7 +223,11 @@ The access control process consists of the following steps:
 
 All Functions
 -------
-<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/aa2be44b-2987-4172-a57e-496adf64fb61" width=" 700" height="500" />
+
+
+The image visualizes all functions and provides insights into which functions are called by other functions.
+
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/aa2be44b-2987-4172-a57e-496adf64fb61" width=" 650" height="450" />
 
 
 
