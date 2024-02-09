@@ -240,7 +240,48 @@ function Box2_CreatePolicy(props) {
     ]);
   };
 
-  //Reset All inputfields adter PSC creation___________________________________
+  //PROHIBITIONS__________________________________________________________
+
+  //Create Assignment Array
+  const [prohibitionList, setProhibitionList] = useState([
+    {
+      attrA_pro_name: "",
+      attrA_pro_value: "",
+      proRight: "",
+      attrB_pro_name: "",
+      attrB_pro_value: "",
+    },
+  ]);
+
+  //Update Assignment on change
+  const handleProhibitionChange = (e, index) => {
+    const list = [...prohibitionList];
+    list[index][e.target.name] = e.target.value;
+    setProhibitionList(list);
+  };
+
+  //Remove Assignment
+  const handleRemoveProhibition = (index) => {
+    const list = [...prohibitionList];
+    list.splice(index, 1);
+    setProhibitionList(list);
+  };
+
+  //Add more Assignment inputfields
+  const handleAddProhibition = () => {
+    setProhibitionList([
+      ...prohibitionList,
+      {
+        attrA_pro_name: "",
+        attrA_pro_value: "",
+        proRight: "",
+        attrB_pro_name: "",
+        attrB_pro_value: "",
+      },
+    ]);
+  };
+
+  //Reset All inputfields after PSC creation___________________________________
   const resetAllInputFields = () => {
     //Reset Add Attribute fields
     setAttributeList([
@@ -540,12 +581,127 @@ function Box2_CreatePolicy(props) {
         );
       }
 
+
+      // //________________________________________PROHIBITION SPLIT_____________________________________________//
+      // // Convert prohibitionList to separate arrays (attrA, accessRight, attrB)
+      // // And also seperate AttrA and AttrB to AttrA(name, value) and AttrB(name, value)
+
+      // //_______________________ATTR A________________________//
+      // //________AttrA name________//
+      let prohibitionListAttrNames_A = prohibitionList.map(
+        (item) => item.attrA_pro_name
+      );
+
+      //Check prohibitionListAttrNames_A Array
+      for (let i = 0; i < prohibitionListAttrNames_A.length; i++) {
+        console.log(
+          "Step 13. prohibitionListAttrNames_A: ",
+          i,
+          "is: ",
+          prohibitionListAttrNames_A[i]
+        );
+      }
+
+      //________AttrA value________//
+      let prohibitionListAttrValues_A = prohibitionList.map(
+        (item) => item.attrA_pro_value
+      );
+
+      //Check prohibitionListAttrValues_A Array
+      for (let i = 0; i < prohibitionListAttrValues_A.length; i++) {
+        console.log(
+          "Step 14. prohibitionListAttrValues_A: ",
+          i,
+          "is: ",
+          prohibitionListAttrValues_A[i]
+        );
+      }
+
+      // //_______________________ACCESSRIGHTS________________________//
+      let prohibitionAccesRights = prohibitionList.map(
+        (item) => item.proRight
+      );
+
+      //Check prohibitionAccesRights Array
+      for (let i = 0; i < prohibitionAccesRights.length; i++) {
+        console.log(
+          "Step 15. prohibitionAccesRights: ",
+          i,
+          "is: ",
+          prohibitionAccesRights[i]
+        );
+      }
+
+      // //_______________________ATTR B________________________//
+      // //________AttrB name________//
+      let prohibitionListAttrNames_B = prohibitionList.map(
+        (item) => item.attrB_pro_name
+      );
+
+      //Check prohibitionListAttrNames_B Array
+      for (let i = 0; i < prohibitionListAttrNames_B.length; i++) {
+        console.log(
+          "Step 16. prohibitionListAttrNames_B: ",
+          i,
+          "is: ",
+          prohibitionListAttrNames_B[i]
+        );
+      }
+
+      //________AttrB value________//
+      let prohibitionListAttrValues_B = prohibitionList.map(
+        (item) => item.attrB_pro_value
+      );
+
+      //Check prohibitionListAttrValues_B Array
+      for (let i = 0; i < prohibitionListAttrValues_B.length; i++) {
+        console.log(
+          "Step 17. prohibitionListAttrValues_B: ",
+          i,
+          "is: ",
+          prohibitionListAttrValues_B[i]
+        );
+      }         
+
+      //________________________________________________________________________________
       //Now we export all this created arrays into the PSC
+      //________________________________________________________________________________
       props.setMSG("Creating PSC...");
 
       //Test if there is any error with callok
       let callOK = true;
 
+      //SEND ALL PROHIBITIONS TO THE PSC
+      try {
+        await PSC.methods
+          .mergeProhibitions(
+            //________Prohibitions__________//
+            prohibitionListAttrNames_A,
+            prohibitionListAttrValues_A,
+            prohibitionAccesRights,
+            prohibitionListAttrNames_B,
+            prohibitionListAttrValues_B
+          )
+          .call({ from: props.walletAddress });
+      } catch (error) {
+        callOK = false;
+        seterrerr(error.message);
+        console.log(errerr.split("{")[0].trim());
+        props.setMSG(errerr.split("{")[0].trim());
+      }
+      if (callOK) {
+        await PSC.methods
+          .mergeProhibitions(
+            //________Prohibitions__________//
+            prohibitionListAttrNames_A,
+            prohibitionListAttrValues_A,
+            prohibitionAccesRights,
+            prohibitionListAttrNames_B,
+            prohibitionListAttrValues_B
+          )
+          .send({ from: props.walletAddress });
+      }
+      
       try {
         await PSC.methods
           .executePSC(
@@ -885,6 +1041,83 @@ function Box2_CreatePolicy(props) {
           Add +1 Association
         </button>
       </div>
+      {/* PROHIBITIONS__________________________________________________________ */}
+      <TextOverInput className="Add Prohibition" />
+      {prohibitionList.map((x, i) => {
+        return (
+          <div key={i}>
+            <div>
+              {/* Inputfields for Prohibition input */}
+              <div>
+                <input
+                  className="text_1of2"
+                  type="text"
+                  placeholder="Attribute A name"
+                  name="attrA_pro_name"
+                  value={x.attrA_pro_name}
+                  onChange={(e) => handleProhibitionChange(e, i)}
+                />
+                <input
+                  className="text_2of2"
+                  type="text"
+                  placeholder="Attribute A value"
+                  name="attrA_pro_value"
+                  value={x.attrA_pro_value}
+                  onChange={(e) => handleProhibitionChange(e, i)}
+                />
+              </div>
+              <div>
+                {" "}
+                <input
+                  className="textAccessrights"
+                  type="text"
+                  placeholder="Accessright"
+                  name="proRight"
+                  value={x.proRight}
+                  onChange={(e) => handleProhibitionChange(e, i)}
+                />
+              </div>
+              <div>
+                {" "}
+                <input
+                  className="text_1of2"
+                  type="text"
+                  placeholder="Attribute B name"
+                  name="attrB_pro_name"
+                  value={x.attrB_pro_name}
+                  onChange={(e) => handleProhibitionChange(e, i)}
+                />{" "}
+                <input
+                  className="text_2of2"
+                  type="text"
+                  placeholder="Attribute B value"
+                  name="attrB_pro_value"
+                  value={x.attrB_pro_value}
+                  onChange={(e) => handleProhibitionChange(e, i)}
+                />
+              </div>
+            </div>
+            <div>
+              {/* If we have more then one Association inputfields add an close button */}
+              {prohibitionList.length > 1 && (
+                <div>
+                  <button
+                    className="ButtonX"
+                    onClick={() => handleRemoveProhibition(i)}
+                  >
+                    X
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+      <div>
+        <button className="generalButton" onClick={handleAddProhibition}>
+          Add +1 Prohibition
+        </button>
+      </div> 
       <div>_______________________</div>
       <div>
         <button className="generalButton" onClick={createPSC}>

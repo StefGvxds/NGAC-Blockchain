@@ -1,42 +1,8 @@
 import Web3 from "../../web3";
 
-const address = "0xaE5bcb767e70FD5C3C1CEC01da18a5FfABFB60dC";
+const address = "0x59f4D7F3b7Ac0913F1cE9eB4737da20575c3c030";
 
 const abi = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "uri",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "accessRight",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "userAttributeName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "userAttributeValue",
-				"type": "string"
-			}
-		],
-		"name": "decision",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -75,8 +41,29 @@ const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getTest1",
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "uri",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "accessRight",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userAttributeName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userAttributeValue",
+				"type": "string"
+			}
+		],
+		"name": "decision",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -84,72 +71,7 @@ const abi = [
 				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTest2",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTest3",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTest4",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTest5",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTest6",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];
