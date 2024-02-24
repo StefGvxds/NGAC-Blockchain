@@ -31,7 +31,7 @@ contract PSC {
     constructor() {
         owner = msg.sender;
         //Saves the address  of the creator from this contract
-        address datscAddress = 0x76435372cCF7f934C9c52ff30ee2A950D631bBad;
+        address datscAddress = 0xdCe1De1e819445d9E851393C00b6D881a6448615;
         datsc = DATSC(datscAddress);
     }
 
@@ -69,6 +69,7 @@ contract PSC {
         Attribute[] attributes;
         Assignment[] assignments;
         Association[] associations;
+        Prohibition[] prohibitions;
     }
 
     //A privilege is the result of the Assignments and Associations that will be passed to DSC
@@ -80,6 +81,16 @@ contract PSC {
 
     //Array that contains all priveleges
     privilege[] privileges;
+
+    //Struct that will store the prohibitions
+    struct Prohibition {
+        Attribute attrA;
+        string accessRight;
+        Attribute attrB;
+    }
+
+    //Array that stores all the prohibitions
+    Prohibition[] prohibitions;
 
     //PSC INSTANCE
     currentPSC curPSC;
@@ -342,6 +353,46 @@ contract PSC {
 
         //Set map on true (means this association exists)
         checkDoubleAssociations[chckAssoctn] = true;
+    }
+
+    //____________________________________FUNCTION Prohibitions___________________________________//
+
+    function mergeProhibitions(
+        //input to create prohibition
+        //attrA
+        string[] memory prohibition_AttrA_name,
+        string[] memory prohibition_AttrA_value,
+        //Accessright
+        string[] memory prohibition_AccessRights,
+        //attrB
+        string[] memory prohibition_AttrB_name,
+        string[] memory prohibition_AttrB_value
+    ) public restricted {
+
+        //Check if prohibition arrays are empty
+        //Check only the prohibitions Attr A name Array
+        if (prohibition_AttrA_name.length != 0){
+            //create all Prohibitions from the input Arrays
+            for (uint256 i = 0; i < prohibition_AttrA_name.length; i++) {
+                //create tmp attribute A
+                Attribute memory tmpAttrA;
+                tmpAttrA.name = prohibition_AttrA_name[i];
+                tmpAttrA.value = prohibition_AttrA_value[i];
+                //create tmp attribute B
+                Attribute memory tmpAttrB;
+                tmpAttrB.name = prohibition_AttrB_name[i];
+                tmpAttrB.value = prohibition_AttrB_value[i];
+                //create Prohibition
+                Prohibition memory tmpProhibition;
+                tmpProhibition.attrA = tmpAttrA;
+                tmpProhibition.attrB = tmpAttrB;
+                tmpProhibition.accessRight = prohibition_AccessRights[i];
+
+                //Push tmpProhibition to Prohibitions Array
+                curPSC.prohibitions.push(tmpProhibition);
+            }
+        }
+
     }
 
     //____________________________________Finalized___________________________________//
@@ -634,16 +685,36 @@ contract PSC {
                         !isAttributeInAttrB(rootsA[j]) &&
                         !isAttributeInAttrB(rootsB[k])
                     ) {
-                        privilege memory newPrivilege;
-                        newPrivilege.attrA = rootsA[j];
-                        newPrivilege.accessRight = assoc.accessRight;
-                        newPrivilege.attrB = rootsB[k];
+                        // Check if this privilege matches any prohibition
+                        if (!isProhibited(rootsA[j], rootsB[k], assoc.accessRight)) {
+                            privilege memory newPrivilege;
+                            newPrivilege.attrA = rootsA[j];
+                            newPrivilege.accessRight = assoc.accessRight;
+                            newPrivilege.attrB = rootsB[k];
 
-                        privileges.push(newPrivilege);
+                            privileges.push(newPrivilege);
+                        }    
                     }
                 }
             }
         }
+    }
+
+    // Function to check if a privilege is prohibited
+    function isProhibited(Attribute memory attrA, Attribute memory attrB, string memory accessRight) internal view returns (bool) {
+        for (uint256 i = 0; i < prohibitions.length; i++) {
+            Prohibition memory prohibition = prohibitions[i];
+            if (    
+                (keccak256(abi.encodePacked(prohibition.attrA.name)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrA.name)) == keccak256(abi.encodePacked(attrA.name))) &&      
+                (keccak256(abi.encodePacked(prohibition.attrA.value)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrA.value)) == keccak256(abi.encodePacked(attrA.value))) &&
+                (keccak256(abi.encodePacked(prohibition.attrB.name)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrB.name)) == keccak256(abi.encodePacked(attrB.name))) &&
+                (keccak256(abi.encodePacked(prohibition.attrB.value)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrB.value)) == keccak256(abi.encodePacked(attrB.value))) &&
+                (keccak256(abi.encodePacked(prohibition.accessRight)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.accessRight)) == keccak256(abi.encodePacked(accessRight)))
+            ) {
+                return true; // Privilege is prohibited
+            }
+        }
+        return false; // Privilege is not prohibited
     }
 
     // This function checks if the given 'attr' attribute exists in the attrB field 
