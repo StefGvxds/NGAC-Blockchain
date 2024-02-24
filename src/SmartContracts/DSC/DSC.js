@@ -1,8 +1,42 @@
 import Web3 from "../../web3";
 
-const address = "0x59f4D7F3b7Ac0913F1cE9eB4737da20575c3c030";
+const address = "0x19F2028775584923D13fBFCa6461f01c4FAb00ca";
 
 const abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "uri",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "accessRight",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userAttributeName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userAttributeValue",
+				"type": "string"
+			}
+		],
+		"name": "decision",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -38,40 +72,6 @@ const abi = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "uri",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "accessRight",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "userAttributeName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "userAttributeValue",
-				"type": "string"
-			}
-		],
-		"name": "decision",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];
