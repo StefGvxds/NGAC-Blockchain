@@ -33,6 +33,8 @@ function BoxContainer_1(props) {
         setPSCaddr={props.setPSCaddr}
         //Privileges
         setprivilegess={props.setprivilegess}
+        //Prohibitions
+        setprohibitionss={props.setprohibitionss}        
         //Update REACT
         updateCounter={props.updateCounter}
       />

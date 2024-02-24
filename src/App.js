@@ -46,8 +46,12 @@ function App() {
     console.log(pscInstance);
   }, [pscInstance]);
 
-  //_________________________________________SET PRIVILEGES_________________?
+  //_________________________________________SET PRIVILEGES_________________
   const [privilegess, setprivilegess] = useState([]);
+
+  //_________________________________________SET PROHIBITIONS_________________
+  const [prohibitionss, setprohibitionss] = useState([]);
+
 
   //___________________________________GET PSC, RSC ADDRESS______________________________________//
   const [RSCaddr, setRSCaddr] = useState("");
@@ -141,6 +145,8 @@ function App() {
           //Privileges
           //getprivilegess={getprivilegess}
           setprivilegess={setprivilegess}
+          //Prohibitions
+          setprohibitionss={setprohibitionss}
           setPSCaddr={setPSCaddr}
           //Update REACT
           updateCounter={updateCounter}
@@ -157,6 +163,8 @@ function App() {
           PSCaddr={PSCaddr}
           //Privileges
           privilegess={privilegess}
+          //Prohibitions
+          prohibitionss={prohibitionss}
           //Update REACT
           updateCounter={updateCounter}
         />

@@ -73,6 +73,7 @@ function Box2_CreatePolicy(props) {
       setPSCInstance();
       getPSC();
       getPrivileges();
+      getProhibitions();
     } else {
       alert("Please install MetaMask and try again.");
     }
@@ -93,6 +94,7 @@ function Box2_CreatePolicy(props) {
       setPSCInstance();
       getPSC();
       getPrivileges();
+      getProhibitions();
     } else {
       props.setMSG("Deploy first a PSC");
     }
@@ -132,6 +134,7 @@ function Box2_CreatePolicy(props) {
     if (PSC) {
       getPSC();
       getPrivileges();
+      getProhibitions();
     }
   }, [PSC]);
 
@@ -748,6 +751,7 @@ function Box2_CreatePolicy(props) {
           .send({ from: props.walletAddress });
         getPSC();
         getPrivileges();
+        getProhibitions();
         props.setMSG("PSC Created!");
       }
     }
@@ -843,6 +847,24 @@ function Box2_CreatePolicy(props) {
       await PSC.methods.getPrivileges().call({ from: props.walletAddress })
     );
   };
+
+    //_____________________________________GET PROHIBITIONS _____________________________________//
+
+    const [prohibitions, setProhibitions] = useState();
+
+    useEffect(() => {
+      if (prohibitions !== undefined) {
+        console.log(prohibitions);
+        console.log("BOX2");
+        props.setprohibitionss(prohibitions);
+      }
+    }, [prohibitions]);
+  
+    const getProhibitions = async () => {
+      setProhibitions(
+        await PSC.methods.getProhibitions().call({ from: props.walletAddress })
+      );
+    };
 
   return (
     <div className="Create-PSC-GUI" id="scrollbar">
@@ -1133,18 +1155,6 @@ function Box2_CreatePolicy(props) {
       <div>
         <button className="generalButton" onClick={saveDeployedPSC}>
           Save Deployed PSC
-        </button>
-      </div>
-      <div>_______________________</div>
-      <div>
-        <button className="generalButton" onClick={isClosed}>
-          Check is Closed?
-        </button>
-      </div>
-      <div>_______________________</div>
-      <div>
-        <button className="generalButton" onClick={getPrivileges}>
-          Get Privileges
         </button>
       </div>
     </div>
