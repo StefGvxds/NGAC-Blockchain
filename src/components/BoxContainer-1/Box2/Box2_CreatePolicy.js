@@ -775,6 +775,81 @@ function Box2_CreatePolicy(props) {
     }
   };
 
+  //__________________________ UPDATE PROHIBITIONS _________________________________________________//
+
+  const updateProhibitions = async () => {
+    //Check if Wallet is connected
+    if (!props.walletAddress) {
+      props.setMSG("Connect first to Wallet");
+    } else {
+
+      //________AttrA name________//
+      let prohibitionListAttrNames_A = prohibitionList.map(
+        (item) => item.attrA_pro_name
+      );
+
+      //________AttrA value________//
+      let prohibitionListAttrValues_A = prohibitionList.map(
+        (item) => item.attrA_pro_value
+      );
+
+      //___ACCESSRIGHTS___________//
+      let prohibitionAccesRights = prohibitionList.map(
+        (item) => item.proRight
+      );
+
+      //________AttrB name________//
+      let prohibitionListAttrNames_B = prohibitionList.map(
+        (item) => item.attrB_pro_name
+      );
+
+      //________AttrB value________//
+      let prohibitionListAttrValues_B = prohibitionList.map(
+        (item) => item.attrB_pro_value
+      );
+
+      props.setMSG("Updating Prohibitions...");
+
+      //Test if there is any error with callok
+      let callOK = true;
+
+      //SEND ALL PROHIBITIONS TO THE PSC
+      try {
+        await PSC.methods
+          .updateProhibitions(
+            //________Prohibitions__________//
+            prohibitionListAttrNames_A,
+            prohibitionListAttrValues_A,
+            prohibitionAccesRights,
+            prohibitionListAttrNames_B,
+            prohibitionListAttrValues_B
+          )
+          .call({ from: props.walletAddress });
+      } catch (error) {
+        callOK = false;
+        seterrerr(error.message);
+        console.log(errerr.split("{")[0].trim());
+        props.setMSG(errerr.split("{")[0].trim());
+      }
+      if (callOK) {
+        await PSC.methods
+          .updateProhibitions(
+            //________Prohibitions__________//
+            prohibitionListAttrNames_A,
+            prohibitionListAttrValues_A,
+            prohibitionAccesRights,
+            prohibitionListAttrNames_B,
+            prohibitionListAttrValues_B
+          )
+          .send({ from: props.walletAddress });
+          getPSC();
+          getPrivileges();
+          getProhibitions();
+          props.setMSG("Prohibitions up to date!");
+      }
+    }
+  }  
+
   const [errerr, seterrerr] = useState("");
 
   //_____________________________________CATCH ERROR MESSAGES_____________________________________//
@@ -1158,6 +1233,11 @@ function Box2_CreatePolicy(props) {
           Add +1 Prohibition
         </button>
       </div> 
+      <div>
+        <button className="generalButton" onClick={updateProhibitions}>
+          Update Prohibitions
+        </button>
+      </div>
       <div>_______________________</div>
       <div>
         <button className="generalButton" onClick={createPSC}>

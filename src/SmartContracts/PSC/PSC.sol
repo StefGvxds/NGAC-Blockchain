@@ -31,7 +31,7 @@ contract PSC {
     constructor() {
         owner = msg.sender;
         //Saves the address  of the creator from this contract
-        address datscAddress = 0x6A53d55903B73808EABF272Ad14eEa643169187d;
+        address datscAddress = 0x2ef5Db5f47A9e25E6F33202fc023826552E93246;
         datsc = DATSC(datscAddress);
     }
 
@@ -663,6 +663,30 @@ contract PSC {
             return mesg;
         }
     }
+
+    //Function to Update Prohibitions AND Privileges!! without to change the Policies
+    function updateProhibitions(        
+        //input to create prohibition
+        //attrA
+        string[] memory prohibition_AttrA_name,
+        string[] memory prohibition_AttrA_value,
+        //Accessright
+        string[] memory prohibition_AccessRights,
+        //attrB
+        string[] memory prohibition_AttrB_name,
+        string[] memory prohibition_AttrB_value) public {
+        //Clear Privileges to create new ones
+        clearPrivileges();
+        //Add new Prohibitions
+        mergeProhibitions(prohibition_AttrA_name, prohibition_AttrA_value, prohibition_AccessRights, prohibition_AttrB_name, prohibition_AttrB_value);
+        //Create the new Privileges in association with the added Prohibitions
+        createPrivileges();
+    }
+
+    //Function to clear Privileges if we update Prohibitions
+    function clearPrivileges() public {
+        delete privileges;
+    }    
 
     // Function to create and display privileges for the owner of the contract
     function createPrivileges() public {

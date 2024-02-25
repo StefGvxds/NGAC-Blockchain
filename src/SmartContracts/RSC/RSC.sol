@@ -43,7 +43,7 @@ contract RSC {
 
     constructor() {
         //Saves the address  of the creator from this contract
-        address datscAddress = 0x6A53d55903B73808EABF272Ad14eEa643169187d;
+        address datscAddress = 0x2ef5Db5f47A9e25E6F33202fc023826552E93246;
         datsc = DATSC(datscAddress);
         owner = msg.sender;
     }
