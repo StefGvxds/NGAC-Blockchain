@@ -693,35 +693,44 @@ function Box2_CreatePolicy(props) {
       let callOK = true;
 
       //SEND ALL PROHIBITIONS TO THE PSC
-      try {
-        await PSC.methods
-          .mergeProhibitions(
-            //________Prohibitions__________//
-            prohibitionListAttrNames_A,
-            prohibitionListAttrValues_A,
-            prohibitionAccesRights,
-            prohibitionListAttrNames_B,
-            prohibitionListAttrValues_B
-          )
-          .call({ from: props.walletAddress });
-      } catch (error) {
-        callOK = false;
-        seterrerr(error.message);
-        console.log(errerr.split("{")[0].trim());
-        props.setMSG(errerr.split("{")[0].trim());
+      if (!containsEmptyString(prohibitionListAttrNames_A) &&
+      !containsEmptyString(prohibitionListAttrValues_A) &&
+      !containsEmptyString(prohibitionAccesRights) &&
+      !containsEmptyString(prohibitionListAttrNames_B) &&
+      !containsEmptyString(prohibitionListAttrValues_B)) {
+
+        try {
+          await PSC.methods
+            .mergeProhibitions(
+              //________Prohibitions__________//
+              prohibitionListAttrNames_A,
+              prohibitionListAttrValues_A,
+              prohibitionAccesRights,
+              prohibitionListAttrNames_B,
+              prohibitionListAttrValues_B
+            )
+            .call({ from: props.walletAddress });
+        } catch (error) {
+          callOK = false;
+          seterrerr(error.message);
+          console.log(errerr.split("{")[0].trim());
+          props.setMSG(errerr.split("{")[0].trim());
+        }
+        if (callOK) {
+          await PSC.methods
+            .mergeProhibitions(
+              //________Prohibitions__________//
+              prohibitionListAttrNames_A,
+              prohibitionListAttrValues_A,
+              prohibitionAccesRights,
+              prohibitionListAttrNames_B,
+              prohibitionListAttrValues_B
+            )
+            .send({ from: props.walletAddress });
+        }
       }
-      if (callOK) {
-        await PSC.methods
-          .mergeProhibitions(
-            //________Prohibitions__________//
-            prohibitionListAttrNames_A,
-            prohibitionListAttrValues_A,
-            prohibitionAccesRights,
-            prohibitionListAttrNames_B,
-            prohibitionListAttrValues_B
-          )
-          .send({ from: props.walletAddress });
-      }
+
+      
       
       try {
         await PSC.methods
@@ -814,43 +823,56 @@ function Box2_CreatePolicy(props) {
       let callOK = true;
 
       //SEND ALL PROHIBITIONS TO THE PSC
-      try {
-        await PSC.methods
-          .updateProhibitions(
-            //________Prohibitions__________//
-            prohibitionListAttrNames_A,
-            prohibitionListAttrValues_A,
-            prohibitionAccesRights,
-            prohibitionListAttrNames_B,
-            prohibitionListAttrValues_B
-          )
-          .call({ from: props.walletAddress });
-      } catch (error) {
-        callOK = false;
-        seterrerr(error.message);
-        console.log(errerr.split("{")[0].trim());
-        props.setMSG(errerr.split("{")[0].trim());
-      }
-      if (callOK) {
-        await PSC.methods
-          .updateProhibitions(
-            //________Prohibitions__________//
-            prohibitionListAttrNames_A,
-            prohibitionListAttrValues_A,
-            prohibitionAccesRights,
-            prohibitionListAttrNames_B,
-            prohibitionListAttrValues_B
-          )
-          .send({ from: props.walletAddress });
-          getPSC();
-          getPrivileges();
-          getProhibitions();
-          props.setMSG("Prohibitions up to date!");
-      }
+      if (!containsEmptyString(prohibitionListAttrNames_A) &&
+          !containsEmptyString(prohibitionListAttrValues_A) &&
+          !containsEmptyString(prohibitionAccesRights) &&
+          !containsEmptyString(prohibitionListAttrNames_B) &&
+          !containsEmptyString(prohibitionListAttrValues_B)) {
+            try {
+              await PSC.methods
+                .updateProhibitions(
+                  //________Prohibitions__________//
+                  prohibitionListAttrNames_A,
+                  prohibitionListAttrValues_A,
+                  prohibitionAccesRights,
+                  prohibitionListAttrNames_B,
+                  prohibitionListAttrValues_B
+                )
+                .call({ from: props.walletAddress });
+            } catch (error) {
+              callOK = false;
+              seterrerr(error.message);
+              console.log(errerr.split("{")[0].trim());
+              props.setMSG(errerr.split("{")[0].trim());
+            }
+            if (callOK) {
+              await PSC.methods
+                .updateProhibitions(
+                  //________Prohibitions__________//
+                  prohibitionListAttrNames_A,
+                  prohibitionListAttrValues_A,
+                  prohibitionAccesRights,
+                  prohibitionListAttrNames_B,
+                  prohibitionListAttrValues_B
+                )
+                .send({ from: props.walletAddress });
+                getPSC();
+                getPrivileges();
+                getProhibitions();
+                props.setMSG("Prohibitions up to date!");
+            }
+          } else {
+            props.setMSG("Prohibition field empty!");
+          }
     }
   }  
 
   const [errerr, seterrerr] = useState("");
+
+  //________________________________No Array has an empty string _____________________________//
+  function containsEmptyString(arr) {
+    return arr.some(item => item === "");
+  }
 
   //_____________________________________CATCH ERROR MESSAGES_____________________________________//
 
