@@ -54,7 +54,7 @@ contract DSC {
     // Constructor for the contract, sets the contract owner and initializes DATSC instance
     constructor() {
         owner = msg.sender;
-        address datscAddress = 0x76435372cCF7f934C9c52ff30ee2A950D631bBad;
+        address datscAddress = 0x6A53d55903B73808EABF272Ad14eEa643169187d;
         datscInstance = DATSC(datscAddress);
     }
 

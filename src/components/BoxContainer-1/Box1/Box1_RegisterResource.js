@@ -374,12 +374,12 @@ function Box1_RegisterResource(props) {
       </div>
       <div>
         <button className="generalButton" onClick={createRSC}>
-          Create RSC
+          Create new Resource
         </button>
       </div>
       <div>
         <button className="generalButton" onClick={() => deleteRSC(delindex)}>
-          Delete RSC
+          Delete Resource
         </button>
 
         {/* Inputfields for Attribute and Value input */}

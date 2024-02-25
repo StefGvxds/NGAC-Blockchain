@@ -245,7 +245,7 @@ function Box2_CreatePolicy(props) {
 
   //PROHIBITIONS__________________________________________________________
 
-  //Create Assignment Array
+  //Create Prohibition Array
   const [prohibitionList, setProhibitionList] = useState([
     {
       attrA_pro_name: "",
@@ -256,21 +256,21 @@ function Box2_CreatePolicy(props) {
     },
   ]);
 
-  //Update Assignment on change
+  //Update Prohibition on change
   const handleProhibitionChange = (e, index) => {
     const list = [...prohibitionList];
     list[index][e.target.name] = e.target.value;
     setProhibitionList(list);
   };
 
-  //Remove Assignment
+  //Remove Prohibition
   const handleRemoveProhibition = (index) => {
     const list = [...prohibitionList];
     list.splice(index, 1);
     setProhibitionList(list);
   };
 
-  //Add more Assignment inputfields
+  //Add more Prohibition inputfields
   const handleAddProhibition = () => {
     setProhibitionList([
       ...prohibitionList,
@@ -337,7 +337,7 @@ function Box2_CreatePolicy(props) {
           item.attrB_assoc_value !== ""
       );
 
-      //If some fields are empy return message to user
+      //If some fields are empty return message to user
       if (!attrIsFilled && !assignmentIsFilled && !associationIsFilled) {
         props.setMSG("You have to fill all the input fields");
       } else if (!attrIsFilled) {
@@ -349,13 +349,13 @@ function Box2_CreatePolicy(props) {
         props.setMSG("You have to fill all the Association fields");
       } else {
         //Call create PSC function
-        crPSC(attributeList, assignmentList, associationList);
+        crPSC(attributeList, assignmentList, associationList, prohibitionList);
       }
     }
   };
 
   //Function to create PSC________________________________________________
-  const crPSC = async (attributeList, assignmentList, associationList) => {
+  const crPSC = async (attributeList, assignmentList, associationList, prohibitionList) => {
     //View all important information (for test purposes)
     console.log("Step 1. WalletAddress: ", props.walletAddress);
     console.log("Step 2. Provider: ", props.provider.toString());
@@ -405,6 +405,24 @@ function Box2_CreatePolicy(props) {
         associationList[i].attrB_assoc_value
       );
     }
+
+    //Check if the prohibitionList contains all important informations
+    for (let i = 0; i < prohibitionList.length; i++) {
+      console.log(
+        "Step 6.1. Prohibition --> ",
+        i,
+        "AttrA name: ",
+        prohibitionList[i].attrA_pro_name,
+        "AttrA value: ",
+        prohibitionList[i].attrA_pro_value,
+        "AccessRight: ",
+        prohibitionList[i].proRight,
+        "AttrB name: ",
+        prohibitionList[i].attrB_pro_name,
+        "AttrB value: ",
+        prohibitionList[i].attrB_pro_value
+      );
+    }    
 
     if (!props.provider) {
       console.log("Provider not defined Error");
@@ -1143,7 +1161,7 @@ function Box2_CreatePolicy(props) {
       <div>_______________________</div>
       <div>
         <button className="generalButton" onClick={createPSC}>
-          Create PSC
+          Create Policies
         </button>
       </div>
       <div>_______________________</div>

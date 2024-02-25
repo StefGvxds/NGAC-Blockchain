@@ -31,7 +31,7 @@ contract PSC {
     constructor() {
         owner = msg.sender;
         //Saves the address  of the creator from this contract
-        address datscAddress = 0xdCe1De1e819445d9E851393C00b6D881a6448615;
+        address datscAddress = 0x6A53d55903B73808EABF272Ad14eEa643169187d;
         datsc = DATSC(datscAddress);
     }
 
@@ -702,8 +702,8 @@ contract PSC {
 
     // Function to check if a privilege is prohibited
     function isProhibited(Attribute memory attrA, Attribute memory attrB, string memory accessRight) internal view returns (bool) {
-        for (uint256 i = 0; i < prohibitions.length; i++) {
-            Prohibition memory prohibition = prohibitions[i];
+        for (uint256 i = 0; i < curPSC.prohibitions.length; i++) {
+            Prohibition memory prohibition = curPSC.prohibitions[i];
             if (    
                 (keccak256(abi.encodePacked(prohibition.attrA.name)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrA.name)) == keccak256(abi.encodePacked(attrA.name))) &&      
                 (keccak256(abi.encodePacked(prohibition.attrA.value)) == keccak256(abi.encodePacked("*")) || keccak256(abi.encodePacked(prohibition.attrA.value)) == keccak256(abi.encodePacked(attrA.value))) &&
@@ -874,6 +874,43 @@ contract PSC {
             }
 
             result = string(abi.encodePacked(result, privilegeString));
+        }
+
+        return result;
+    }
+
+    //__________________________________GET ALL PROHIBITIONS AS STRING____________________________________________//
+    function getProhibitions() public view returns (string memory) {
+        string memory result = "Prohibitions:\n";
+
+        for (uint256 i = 0; i < curPSC.prohibitions.length; i++) {
+            string memory prohibitionString = string(
+                abi.encodePacked(
+                    "(",
+                    curPSC.prohibitions[i].attrA.name,
+                    ":",
+                    curPSC.prohibitions[i].attrA.value,
+                    ", ",
+                    curPSC.prohibitions[i].accessRight,
+                    ", ",
+                    curPSC.prohibitions[i].attrB.name,
+                    ":",
+                    curPSC.prohibitions[i].attrB.value,
+                    ")"
+                )
+            );
+
+            if (i < curPSC.prohibitions.length - 1) {
+                prohibitionString = string(
+                    abi.encodePacked(prohibitionString, ",\n")
+                );
+            }
+            if (curPSC.prohibitions.length == 0) {
+                return
+                    "No prohibitions found.";
+            }
+
+            result = string(abi.encodePacked(result, prohibitionString));
         }
 
         return result;
