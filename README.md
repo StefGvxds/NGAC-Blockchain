@@ -186,7 +186,7 @@ Once the policy is saved, it cannot be edited. To create a new policy, the user 
 
 Immediately after creating the attributes, assignments, and associations of the PSC, the DApp generates the corresponding privileges.
 
-<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/f54761d2-b2fa-4030-a117-127f5640a215" width="280" height="300" />
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/95c843b6-dc15-46de-8de3-f895ed6a34b5" width="280" height="300" />
 
 Register an object
 -------
