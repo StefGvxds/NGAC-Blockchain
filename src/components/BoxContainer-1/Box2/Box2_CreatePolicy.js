@@ -9,7 +9,12 @@ import { abiPSC, bytecodePSC } from "../../../SmartContracts/PSC/PSC.js";
 import DATSC from "../../../SmartContracts/DATSC/DATSC.js";
 
 function Box2_CreatePolicy(props) {
-  //LOAD PSC When LOGIN
+
+
+//_____________________________________________ TIME COUNTER __________________________________//
+  const currentTime = new Date();
+
+//___________________________________________ LOAD PSC When LOGIN
   useEffect(() => {
     if (props.walletAddress) {
       loadPSC();
@@ -21,6 +26,10 @@ function Box2_CreatePolicy(props) {
   const [savPSCaddr, setsavPSCaddr] = useState("");
   //Deploy PSC
   const deployContract = async () => {
+
+    //Set TIME when we want start count//
+    const startTime = new Date();
+
     if (typeof window.ethereum !== "undefined") {
       props.setMSG("Deploying PSC...");
 
@@ -77,7 +86,18 @@ function Box2_CreatePolicy(props) {
     } else {
       alert("Please install MetaMask and try again.");
     }
-    props.setMSG("PSC is Deployed! Please click on Save Deployed PSC!");
+    //Set TIME when we want to stop count//
+    const endTime = new Date();
+    //Calc the difference
+    const timeInMilliSec = endTime - startTime;
+    //Convert the time in hours, minutes, seconds, milliseconds
+    const timeInSec = timeInMilliSec / 1000;
+    const hours = Math.floor(timeInSec / 3600);
+    const minutes = Math.floor((timeInSec % 3600) / 60);
+    const seconds = Math.floor(timeInSec % 60);
+    const milliseconds = (timeInMilliSec % 1000) / 1000; // Hier wird durch 1000 geteilt, um den Bruchteil einer Sekunde zu erhalten
+
+    props.setMSG(`PSC is Deployed! Please click on Save Deployed PSC! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
   };
   //______________________________________________________SAVE PSC_________________________________//
   const saveDeployedPSC = async () => {
