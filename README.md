@@ -233,6 +233,14 @@ The image visualizes all functions and provides insights into which functions ar
 Prohibitions
 -------
 
+To understand how prohibitions function, let's examine an example. Suppose we have the following privileges:
+
+User: User1, read, Object: Object1
+User: User1, write, Object: Object2
+User: User2, read, Object: Object1
+
+In the prohibitions, we can use the * symbol for attributes Name and Value or accessrights. Thus, for example, with the prohibition (*:*, read, Object:Object1), all privileges granting the read permission to Object1 are revoked. It's also possible to directly revoke privileges from a specific user by setting a prohibition such as (User: User1, *, *:*). Alternatively, we can revoke a specific permission from a specific user on a particular object, as demonstrated by (User: User2, read, Object:Object1). In general, the * symbol serves as a wildcard.
+
 The user invokes the frontend function createPSC, which conducts a series of checks and then calls crPSC. If the user has added prohibitions in the input fields, they are stored in the PSC. The function executePSC is called, which in turn invokes the function createPrivileges. If prohibitions have been saved, they are taken into account during the creation of privileges.
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/8c410ff8-dffb-4238-b08c-504e489f76df" width="400" height="450" />
