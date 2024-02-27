@@ -79,9 +79,9 @@ In NGAC, a policy is depicted with assignment and association relationships as a
 
 Input Data for DApp
 -------
-The DApp includes an algorithm for detecting privileges based on user-defined policies. Below are the characteristics, privileges, assignments, and associations resulting from the above image.
+The DApp includes an algorithm for detecting privileges based on user-defined policies. Below are the attributes, privileges, assignments, and associations resulting from the above image.
 
-Characteristics:
+Attributes:
 - User: User1
 - User: User2
 - Group: Group1
@@ -200,7 +200,7 @@ To complete the registration of an object, the user must click the "Create RSC" 
 
 Access Request
 -------
-To submit an access request for an object owned by another user, a user needs to enter their corresponding characteristic. For example, to obtain the privilege (User1, r, Object1) and gain access to Object1, the user must enter the characteristic User:User1. Additionally, the user is required to input the access right and the URI where the object is stored for which they want to request access.
+To submit an access request for an object owned by another user, a user needs to enter their corresponding attributes. For example, to obtain the privilege (User1, r, Object1) and gain access to Object1, the user must enter the attributes User:User1. Additionally, the user is required to input the access right and the URI where the object is stored for which they want to request access.
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/261c2c52-ef68-4f1e-b872-4160375304d7" width="280" height="300" />
 
@@ -214,7 +214,7 @@ The access control process consists of the following steps:
 
 2. Next, the DSC retrieves the privileges associated with the specific URI from the PSC.
 
-3. The DSC then re-evaluates these privileges, searching for a privilege that matches the user's characteristic, the access right requested by the user, and the URI where the object the user is requesting access to is stored.
+3. The DSC then re-evaluates these privileges, searching for a privilege that matches the user's attributes, the access right requested by the user, and the URI where the object the user is requesting access to is stored.
 
 4. Finally, based on the result of the evaluation, the DSC updates the user through the front-end, indicating whether access to the requested object is allowed ("Access succeed") or denied ("Access denied").
 
