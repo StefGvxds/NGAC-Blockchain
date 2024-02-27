@@ -233,8 +233,8 @@ The image visualizes all functions and provides insights into which functions ar
 Prohibitions
 -------
 
-<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/71383204-33a7-4ede-9cf3-d66aeec51aa5" width=" 650" height="450" />
-<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/25cee27b-034b-4969-9170-08e2c708543a" width=" 650" height="450" />
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/71383204-33a7-4ede-9cf3-d66aeec51aa5" width="400" height="450" />
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/25cee27b-034b-4969-9170-08e2c708543a" width="400" height="450" />
 
 
 Transformation and Adaptation Guide for DApp: Steps for Developers
