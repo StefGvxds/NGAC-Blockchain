@@ -222,7 +222,7 @@ The access control process consists of the following steps:
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/c8031d72-b388-46af-9b00-5759e97e97dd" width="500" height="300" />
 
-All Functions
+Functions (without prohibitions)
 -------
 
 
