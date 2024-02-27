@@ -234,6 +234,7 @@ Prohibitions
 -------
 
 The user invokes the frontend function createPSC, which conducts a series of checks and then calls crPSC. If the user has added prohibitions in the input fields, they are stored in the PSC. The function executePSC is called, which in turn invokes the function createPrivileges. If prohibitions have been saved, they are taken into account during the creation of privileges.
+
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/8c410ff8-dffb-4238-b08c-504e489f76df" width="400" height="450" />
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/25cee27b-034b-4969-9170-08e2c708543a" width="400" height="450" />
