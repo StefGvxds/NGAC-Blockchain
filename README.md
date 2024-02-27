@@ -230,6 +230,11 @@ The image visualizes all functions and provides insights into which functions ar
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/aa2be44b-2987-4172-a57e-496adf64fb61" width=" 650" height="450" />
 
+Prohibitions
+-------
+
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/71383204-33a7-4ede-9cf3-d66aeec51aa5" width=" 650" height="450" />
+<img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/25cee27b-034b-4969-9170-08e2c708543a" width=" 650" height="450" />
 
 
 Transformation and Adaptation Guide for DApp: Steps for Developers
@@ -267,12 +272,6 @@ The code transformation diagram requires the following steps:
 7. Storing the new ABI  and the address of the DSC in the REACT code.
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/74c3f043-66a2-4bcb-8865-c43f8941379d" width="600" height="300" />
-
-
-Upcoming Features
--------
-Obligations and Prohibitions: This upcoming feature will empower users to define specific actions that are required or forbidden within each policy. By incorporating obligations and prohibitions directly into policies, users will have finer control over access management and greater flexibility in setting permissions.
-
 
 License
 -------
