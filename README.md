@@ -246,6 +246,7 @@ The user invokes the frontend function createPSC, which conducts a series of che
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/8c410ff8-dffb-4238-b08c-504e489f76df" width="400" height="450" />
 
 
+
 If the user wants to add additional prohibitions, he can input them into the designated field. The function updateProhibitions is then called. If there are no prohibitions in the designated fields, the process is halted. However, if prohibitions exist, the updateProhibitions function is invoked within the PSC, leading to the deletion of all privileges. The prohibitions are saved in the PSC, and the privileges are recreated.
 
 <img src="https://github.com/StefGvxds/NGAC-Blockchain/assets/129869539/25cee27b-034b-4969-9170-08e2c708543a" width="400" height="450" />
