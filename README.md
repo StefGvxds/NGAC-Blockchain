@@ -83,7 +83,8 @@ The DApp includes an algorithm for detecting privileges based on user-defined po
 
 Characteristics:
 - User: User1
-- User: User2 Group: Group1
+- User: User2
+- Group: Group1
 - Group: Group2
 - Object: Object1
 - Object: Object2
