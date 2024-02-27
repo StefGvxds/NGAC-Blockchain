@@ -26,9 +26,7 @@ function Box2_CreatePolicy(props) {
   const [savPSCaddr, setsavPSCaddr] = useState("");
   //Deploy PSC
   const deployContract = async () => {
-
-    //Set TIME when we want start count//
-    const startTime = new Date();
+    console.clear();
 
     if (typeof window.ethereum !== "undefined") {
       props.setMSG("Deploying PSC...");
@@ -39,8 +37,8 @@ function Box2_CreatePolicy(props) {
       const fromAddress = props.walletAddress;
 
       // Create new instance (With PSC ABI)
-      console.log("ABI: ", abiPSC);
-      console.log("Web3 : ", Web3.eth);
+      //console.log("ABI: ", abiPSC);
+      //console.log("Web3 : ", Web3.eth);
       const contractInstance = new Web3.eth.Contract(abiPSC);
 
       //Set constructor parameter (here not nessecary)
@@ -55,6 +53,9 @@ function Box2_CreatePolicy(props) {
             //estimateGas *2 because there will be an error if the gasprice is to low
           })
           .estimateGas()) * 2;
+      
+      //Set TIME when we want start count//
+      const startTime = new Date();    
 
       // Deploy Smart Contract
       await contractInstance
@@ -67,17 +68,30 @@ function Box2_CreatePolicy(props) {
           gas: gasEstimate,
         })
         .on("transactionHash", (transactionHash) => {
-          console.log("Transaction Hash:", transactionHash);
+          //console.log("Transaction Hash:", transactionHash);
         })
         .on("receipt", (receipt) => {
-          console.log("Receipt:", receipt);
-          console.log("Deployed Contract Address:", receipt.contractAddress);
+          //console.log("Receipt:", receipt);
+          //console.log("Deployed Contract Address:", receipt.contractAddress);
           //save deployed PSC address
           setsavPSCaddr(receipt.contractAddress);
         })
         .on("error", (error) => {
           console.error("Error:", error);
         });
+
+      //Set TIME when we want to stop count//
+      const endTime = new Date();
+      //Calc the difference
+      const timeInMilliSec = endTime - startTime;
+      //Convert the time in hours, minutes, seconds, milliseconds
+      const timeInSec = timeInMilliSec / 1000;
+      const hours = Math.floor(timeInSec / 3600);
+      const minutes = Math.floor((timeInSec % 3600) / 60);
+      const seconds = Math.floor(timeInSec % 60);
+      const milliseconds = (timeInMilliSec % 1000) / 1000; // Hier wird durch 1000 geteilt, um den Bruchteil einer Sekunde zu erhalten
+
+      console.log(`PSC is Deployed! Please click on Save Deployed PSC! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
       //Set PSC
       setPSCInstance();
       getPSC();
@@ -86,28 +100,34 @@ function Box2_CreatePolicy(props) {
     } else {
       alert("Please install MetaMask and try again.");
     }
-    //Set TIME when we want to stop count//
-    const endTime = new Date();
-    //Calc the difference
-    const timeInMilliSec = endTime - startTime;
-    //Convert the time in hours, minutes, seconds, milliseconds
-    const timeInSec = timeInMilliSec / 1000;
-    const hours = Math.floor(timeInSec / 3600);
-    const minutes = Math.floor((timeInSec % 3600) / 60);
-    const seconds = Math.floor(timeInSec % 60);
-    const milliseconds = (timeInMilliSec % 1000) / 1000; // Hier wird durch 1000 geteilt, um den Bruchteil einer Sekunde zu erhalten
-
-    props.setMSG(`PSC is Deployed! Please click on Save Deployed PSC! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+    props.setMSG(`PSC is Deployed! Please click on Save Deployed PSC!`);
   };
   //______________________________________________________SAVE PSC_________________________________//
   const saveDeployedPSC = async () => {
+    console.clear();
     if (savPSCaddr) {
+
+      //Set TIME when we want start count//
+      const startTime = new Date();
+
       props.setMSG("Saving PSC...");
       try {
         await DATSC.methods
           .addPSC(savPSCaddr)
           .send({ from: props.walletAddress });
-        props.setMSG("PSC saved!");
+
+        //Set TIME when we want to stop count//
+        const endTime = new Date();
+        //Calc the difference
+        const timeInMilliSec = endTime - startTime;
+        //Convert the time in hours, minutes, seconds, milliseconds
+        const timeInSec = timeInMilliSec / 1000;
+        const hours = Math.floor(timeInSec / 3600);
+        const minutes = Math.floor((timeInSec % 3600) / 60);
+        const seconds = Math.floor(timeInSec % 60);
+        const milliseconds = (timeInMilliSec % 1000) / 1000; 
+        console.log(`PSC saved! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+        props.setMSG(`PSC saved!`);
       } catch (error) {
         props.setMSG("Failed to save PSC: " + error.message);
       }
@@ -330,6 +350,7 @@ function Box2_CreatePolicy(props) {
   //Create PSC by click on Button__________________________________________________________
 
   const createPSC = () => {
+    console.clear();
     //Check if Wallet is connected
     if (!props.walletAddress) {
       props.setMSG("Connect first to Wallet");
@@ -377,72 +398,72 @@ function Box2_CreatePolicy(props) {
   //Function to create PSC________________________________________________
   const crPSC = async (attributeList, assignmentList, associationList, prohibitionList) => {
     //View all important information (for test purposes)
-    console.log("Step 1. WalletAddress: ", props.walletAddress);
-    console.log("Step 2. Provider: ", props.provider.toString());
-    console.log("Step 3. PSC: ", PSC);
+    //console.log("Step 1. WalletAddress: ", props.walletAddress);
+    //console.log("Step 2. Provider: ", props.provider.toString());
+    //console.log("Step 3. PSC: ", PSC);
     //Check if the attributeList contains all important informations
-    for (let i = 0; i < attributeList.length; i++) {
-      console.log(
-        "Step 4. Attribute ",
-        i,
-        "is: ",
-        attributeList[i].attr,
-        "Value ",
-        i,
-        "is: ",
-        attributeList[i].val
-      );
-    }
+    // for (let i = 0; i < attributeList.length; i++) {
+    //   console.log(
+    //     "Step 4. Attribute ",
+    //     i,
+    //     "is: ",
+    //     attributeList[i].attr,
+    //     "Value ",
+    //     i,
+    //     "is: ",
+    //     attributeList[i].val
+    //   );
+    // }
     //Check if the assignmentList contains all important informations
-    for (let i = 0; i < assignmentList.length; i++) {
-      console.log(
-        "Step 5. Assignment --> ",
-        i,
-        "AttrA name: ",
-        assignmentList[i].attrA_name,
-        "AttrA value: ",
-        assignmentList[i].attrA_value,
-        "AttrB name: ",
-        assignmentList[i].attrB_name,
-        "AttrB value: ",
-        assignmentList[i].attrB_value
-      );
-    }
+    // for (let i = 0; i < assignmentList.length; i++) {
+    //   console.log(
+    //     "Step 5. Assignment --> ",
+    //     i,
+    //     "AttrA name: ",
+    //     assignmentList[i].attrA_name,
+    //     "AttrA value: ",
+    //     assignmentList[i].attrA_value,
+    //     "AttrB name: ",
+    //     assignmentList[i].attrB_name,
+    //     "AttrB value: ",
+    //     assignmentList[i].attrB_value
+    //   );
+    // }
     //Check if the associationList contains all important informations
-    for (let i = 0; i < associationList.length; i++) {
-      console.log(
-        "Step 6. Association --> ",
-        i,
-        "AttrA name: ",
-        associationList[i].attrA_assoc_name,
-        "AttrA value: ",
-        associationList[i].attrA_assoc_value,
-        "AccessRight: ",
-        associationList[i].accessRight,
-        "AttrB name: ",
-        associationList[i].attrB_assoc_name,
-        "AttrB value: ",
-        associationList[i].attrB_assoc_value
-      );
-    }
+    // for (let i = 0; i < associationList.length; i++) {
+    //   console.log(
+    //     "Step 6. Association --> ",
+    //     i,
+    //     "AttrA name: ",
+    //     associationList[i].attrA_assoc_name,
+    //     "AttrA value: ",
+    //     associationList[i].attrA_assoc_value,
+    //     "AccessRight: ",
+    //     associationList[i].accessRight,
+    //     "AttrB name: ",
+    //     associationList[i].attrB_assoc_name,
+    //     "AttrB value: ",
+    //     associationList[i].attrB_assoc_value
+    //   );
+    // }
 
     //Check if the prohibitionList contains all important informations
-    for (let i = 0; i < prohibitionList.length; i++) {
-      console.log(
-        "Step 6.1. Prohibition --> ",
-        i,
-        "AttrA name: ",
-        prohibitionList[i].attrA_pro_name,
-        "AttrA value: ",
-        prohibitionList[i].attrA_pro_value,
-        "AccessRight: ",
-        prohibitionList[i].proRight,
-        "AttrB name: ",
-        prohibitionList[i].attrB_pro_name,
-        "AttrB value: ",
-        prohibitionList[i].attrB_pro_value
-      );
-    }    
+    // for (let i = 0; i < prohibitionList.length; i++) {
+    //   console.log(
+    //     "Step 6.1. Prohibition --> ",
+    //     i,
+    //     "AttrA name: ",
+    //     prohibitionList[i].attrA_pro_name,
+    //     "AttrA value: ",
+    //     prohibitionList[i].attrA_pro_value,
+    //     "AccessRight: ",
+    //     prohibitionList[i].proRight,
+    //     "AttrB name: ",
+    //     prohibitionList[i].attrB_pro_name,
+    //     "AttrB value: ",
+    //     prohibitionList[i].attrB_pro_value
+    //   );
+    // }    
 
     if (!props.provider) {
       console.log("Provider not defined Error");
@@ -456,23 +477,23 @@ function Box2_CreatePolicy(props) {
       const attributeListAttrNames = attributeList.map((item) => item.attr);
       const attributeListAttrValues = attributeList.map((item) => item.val);
       //Check attributeListAttrNames Array
-      for (let i = 0; i < attributeListAttrNames.length; i++) {
-        console.log(
-          "Step 7. attributeListAttrNames: ",
-          i,
-          "is: ",
-          attributeListAttrNames[i]
-        );
-      }
+      // for (let i = 0; i < attributeListAttrNames.length; i++) {
+      //   console.log(
+      //     "Step 7. attributeListAttrNames: ",
+      //     i,
+      //     "is: ",
+      //     attributeListAttrNames[i]
+      //   );
+      // }
       //Check attributeListAttrValues Array
-      for (let i = 0; i < attributeListAttrValues.length; i++) {
-        console.log(
-          "Step 8. attributeListAttrValues: ",
-          i,
-          "is: ",
-          attributeListAttrValues[i]
-        );
-      }
+      // for (let i = 0; i < attributeListAttrValues.length; i++) {
+      //   console.log(
+      //     "Step 8. attributeListAttrValues: ",
+      //     i,
+      //     "is: ",
+      //     attributeListAttrValues[i]
+      //   );
+      // }
 
       //________________________________________ASSIGNMENT SPLIT_____________________________________________//
       // Convert assignmentList to separate arrays (attrA, attrB)
@@ -486,14 +507,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check assignmentListAttrNames_A Array
-      for (let i = 0; i < assignmentListAttrNames_A.length; i++) {
-        console.log(
-          "Step 9. assignmentListAttrNames_A: ",
-          i,
-          "is: ",
-          assignmentListAttrNames_A[i]
-        );
-      }
+      // for (let i = 0; i < assignmentListAttrNames_A.length; i++) {
+      //   console.log(
+      //     "Step 9. assignmentListAttrNames_A: ",
+      //     i,
+      //     "is: ",
+      //     assignmentListAttrNames_A[i]
+      //   );
+      // }
 
       //________AttrA value________//
       let assignmentListAttrValues_A = assignmentList.map(
@@ -501,14 +522,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check assignmentListAttrValues_A Array
-      for (let i = 0; i < assignmentListAttrValues_A.length; i++) {
-        console.log(
-          "Step 10. assignmentListAttrValues_A: ",
-          i,
-          "is: ",
-          assignmentListAttrValues_A[i]
-        );
-      }
+      // for (let i = 0; i < assignmentListAttrValues_A.length; i++) {
+      //   console.log(
+      //     "Step 10. assignmentListAttrValues_A: ",
+      //     i,
+      //     "is: ",
+      //     assignmentListAttrValues_A[i]
+      //   );
+      // }
 
       //_______________________ATTR B________________________//
       //________AttrB name________//
@@ -517,14 +538,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check assignmentListAttrNames_B Array
-      for (let i = 0; i < assignmentListAttrNames_B.length; i++) {
-        console.log(
-          "Step 11. assignmentListAttrNames_B: ",
-          i,
-          "is: ",
-          assignmentListAttrNames_B[i]
-        );
-      }
+      // for (let i = 0; i < assignmentListAttrNames_B.length; i++) {
+      //   console.log(
+      //     "Step 11. assignmentListAttrNames_B: ",
+      //     i,
+      //     "is: ",
+      //     assignmentListAttrNames_B[i]
+      //   );
+      // }
 
       //________AttrB value________//
       let assignmentListAttrValues_B = assignmentList.map(
@@ -532,14 +553,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check assignmentListAttrValues_B Array
-      for (let i = 0; i < assignmentListAttrValues_B.length; i++) {
-        console.log(
-          "Step 12. assignmentListAttrValues_B: ",
-          i,
-          "is: ",
-          assignmentListAttrValues_B[i]
-        );
-      }
+      // for (let i = 0; i < assignmentListAttrValues_B.length; i++) {
+      //   console.log(
+      //     "Step 12. assignmentListAttrValues_B: ",
+      //     i,
+      //     "is: ",
+      //     assignmentListAttrValues_B[i]
+      //   );
+      // }
 
       // //________________________________________ASSOCIATION SPLIT_____________________________________________//
       // // Convert associationList to separate arrays (attrA, accessRight, attrB)
@@ -552,14 +573,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check associationListAttrNames_A Array
-      for (let i = 0; i < associationListAttrNames_A.length; i++) {
-        console.log(
-          "Step 13. associationListAttrNames_A: ",
-          i,
-          "is: ",
-          associationListAttrNames_A[i]
-        );
-      }
+      // for (let i = 0; i < associationListAttrNames_A.length; i++) {
+      //   console.log(
+      //     "Step 13. associationListAttrNames_A: ",
+      //     i,
+      //     "is: ",
+      //     associationListAttrNames_A[i]
+      //   );
+      // }
 
       //________AttrA value________//
       let associationListAttrValues_A = associationList.map(
@@ -567,14 +588,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check associationListAttrValues_A Array
-      for (let i = 0; i < associationListAttrValues_A.length; i++) {
-        console.log(
-          "Step 14. associationListAttrValues_A: ",
-          i,
-          "is: ",
-          associationListAttrValues_A[i]
-        );
-      }
+      // for (let i = 0; i < associationListAttrValues_A.length; i++) {
+      //   console.log(
+      //     "Step 14. associationListAttrValues_A: ",
+      //     i,
+      //     "is: ",
+      //     associationListAttrValues_A[i]
+      //   );
+      // }
 
       // //_______________________ACCESSRIGHTS________________________//
       let associationAccesRights = associationList.map(
@@ -582,14 +603,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check associationAccesRights Array
-      for (let i = 0; i < associationAccesRights.length; i++) {
-        console.log(
-          "Step 15. associationAccesRights: ",
-          i,
-          "is: ",
-          associationAccesRights[i]
-        );
-      }
+      // for (let i = 0; i < associationAccesRights.length; i++) {
+      //   console.log(
+      //     "Step 15. associationAccesRights: ",
+      //     i,
+      //     "is: ",
+      //     associationAccesRights[i]
+      //   );
+      // }
 
       // //_______________________ATTR B________________________//
       // //________AttrB name________//
@@ -598,14 +619,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check associationListAttrNames_B Array
-      for (let i = 0; i < associationListAttrNames_B.length; i++) {
-        console.log(
-          "Step 16. associationListAttrNames_B: ",
-          i,
-          "is: ",
-          associationListAttrNames_B[i]
-        );
-      }
+      // for (let i = 0; i < associationListAttrNames_B.length; i++) {
+      //   console.log(
+      //     "Step 16. associationListAttrNames_B: ",
+      //     i,
+      //     "is: ",
+      //     associationListAttrNames_B[i]
+      //   );
+      // }
 
       //________AttrB value________//
       let associationListAttrValues_B = associationList.map(
@@ -613,14 +634,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check associationListAttrValues_B Array
-      for (let i = 0; i < associationListAttrValues_B.length; i++) {
-        console.log(
-          "Step 17. associationListAttrValues_B: ",
-          i,
-          "is: ",
-          associationListAttrValues_B[i]
-        );
-      }
+      // for (let i = 0; i < associationListAttrValues_B.length; i++) {
+      //   console.log(
+      //     "Step 17. associationListAttrValues_B: ",
+      //     i,
+      //     "is: ",
+      //     associationListAttrValues_B[i]
+      //   );
+      // }
 
 
       // //________________________________________PROHIBITION SPLIT_____________________________________________//
@@ -634,14 +655,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check prohibitionListAttrNames_A Array
-      for (let i = 0; i < prohibitionListAttrNames_A.length; i++) {
-        console.log(
-          "Step 13. prohibitionListAttrNames_A: ",
-          i,
-          "is: ",
-          prohibitionListAttrNames_A[i]
-        );
-      }
+      // for (let i = 0; i < prohibitionListAttrNames_A.length; i++) {
+      //   console.log(
+      //     "Step 13. prohibitionListAttrNames_A: ",
+      //     i,
+      //     "is: ",
+      //     prohibitionListAttrNames_A[i]
+      //   );
+      // }
 
       //________AttrA value________//
       let prohibitionListAttrValues_A = prohibitionList.map(
@@ -649,14 +670,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check prohibitionListAttrValues_A Array
-      for (let i = 0; i < prohibitionListAttrValues_A.length; i++) {
-        console.log(
-          "Step 14. prohibitionListAttrValues_A: ",
-          i,
-          "is: ",
-          prohibitionListAttrValues_A[i]
-        );
-      }
+      // for (let i = 0; i < prohibitionListAttrValues_A.length; i++) {
+      //   console.log(
+      //     "Step 14. prohibitionListAttrValues_A: ",
+      //     i,
+      //     "is: ",
+      //     prohibitionListAttrValues_A[i]
+      //   );
+      // }
 
       // //_______________________ACCESSRIGHTS________________________//
       let prohibitionAccesRights = prohibitionList.map(
@@ -664,14 +685,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check prohibitionAccesRights Array
-      for (let i = 0; i < prohibitionAccesRights.length; i++) {
-        console.log(
-          "Step 15. prohibitionAccesRights: ",
-          i,
-          "is: ",
-          prohibitionAccesRights[i]
-        );
-      }
+      // for (let i = 0; i < prohibitionAccesRights.length; i++) {
+      //   console.log(
+      //     "Step 15. prohibitionAccesRights: ",
+      //     i,
+      //     "is: ",
+      //     prohibitionAccesRights[i]
+      //   );
+      // }
 
       // //_______________________ATTR B________________________//
       // //________AttrB name________//
@@ -680,14 +701,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check prohibitionListAttrNames_B Array
-      for (let i = 0; i < prohibitionListAttrNames_B.length; i++) {
-        console.log(
-          "Step 16. prohibitionListAttrNames_B: ",
-          i,
-          "is: ",
-          prohibitionListAttrNames_B[i]
-        );
-      }
+      // for (let i = 0; i < prohibitionListAttrNames_B.length; i++) {
+      //   console.log(
+      //     "Step 16. prohibitionListAttrNames_B: ",
+      //     i,
+      //     "is: ",
+      //     prohibitionListAttrNames_B[i]
+      //   );
+      // }
 
       //________AttrB value________//
       let prohibitionListAttrValues_B = prohibitionList.map(
@@ -695,14 +716,14 @@ function Box2_CreatePolicy(props) {
       );
 
       //Check prohibitionListAttrValues_B Array
-      for (let i = 0; i < prohibitionListAttrValues_B.length; i++) {
-        console.log(
-          "Step 17. prohibitionListAttrValues_B: ",
-          i,
-          "is: ",
-          prohibitionListAttrValues_B[i]
-        );
-      }         
+      // for (let i = 0; i < prohibitionListAttrValues_B.length; i++) {
+      //   console.log(
+      //     "Step 17. prohibitionListAttrValues_B: ",
+      //     i,
+      //     "is: ",
+      //     prohibitionListAttrValues_B[i]
+      //   );
+      // }         
 
       //________________________________________________________________________________
       //Now we export all this created arrays into the PSC
@@ -736,7 +757,13 @@ function Box2_CreatePolicy(props) {
           console.log(errerr.split("{")[0].trim());
           props.setMSG(errerr.split("{")[0].trim());
         }
+
+
+
         if (callOK) {
+          //Set TIME when we want start count//
+          const startTime = new Date();
+
           await PSC.methods
             .mergeProhibitions(
               //________Prohibitions__________//
@@ -747,10 +774,21 @@ function Box2_CreatePolicy(props) {
               prohibitionListAttrValues_B
             )
             .send({ from: props.walletAddress });
+
+          //Set TIME when we want to stop count//
+          const endTime = new Date();
+          //Calc the difference
+          const timeInMilliSec = endTime - startTime;
+          //Convert the time in hours, minutes, seconds, milliseconds
+          const timeInSec = timeInMilliSec / 1000;
+          const hours = Math.floor(timeInSec / 3600);
+          const minutes = Math.floor((timeInSec % 3600) / 60);
+          const seconds = Math.floor(timeInSec % 60);
+          const milliseconds = (timeInMilliSec % 1000) / 1000; 
+          console.log(`Prohibitions added! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+          props.setMSG(`Prohibitions added!`);
         }
       }
-
-      
       
       try {
         await PSC.methods
@@ -777,7 +815,11 @@ function Box2_CreatePolicy(props) {
         console.log(errerr.split("{")[0].trim());
         props.setMSG(errerr.split("{")[0].trim());
       }
+
       if (callOK) {
+        //Set TIME when we want start count//
+        const startTime2 = new Date();
+
         await PSC.methods
           .executePSC(
             //________Attribute__________//
@@ -796,10 +838,22 @@ function Box2_CreatePolicy(props) {
             associationListAttrValues_B
           )
           .send({ from: props.walletAddress });
+
+        //Set TIME when we want to stop count//
+        const endTime2 = new Date();
+        //Calc the difference
+        const timeInMilliSec2 = endTime2 - startTime2;
+        //Convert the time in hours, minutes, seconds, milliseconds
+        const timeInSec2 = timeInMilliSec2 / 1000;
+        const hours2 = Math.floor(timeInSec2 / 3600);
+        const minutes2 = Math.floor((timeInSec2 % 3600) / 60);
+        const seconds2 = Math.floor(timeInSec2 % 60);
+        const milliseconds2 = (timeInMilliSec2 % 1000) / 1000; 
+        console.log(`Policies Created! (Executiontime: ${hours2} Hours, ${minutes2} Minutes, ${seconds2} Seconds, ${milliseconds2} Milliseconds)`);
         getPSC();
         getPrivileges();
         getProhibitions();
-        props.setMSG("PSC Created!");
+        props.setMSG(`Policies Created!`);
       }
     }
   };
@@ -841,13 +895,14 @@ function Box2_CreatePolicy(props) {
 
       //Test if there is any error with callok
       let callOK = true;
-
+      
       //SEND ALL PROHIBITIONS TO THE PSC
       if (!containsEmptyString(prohibitionListAttrNames_A) &&
           !containsEmptyString(prohibitionListAttrValues_A) &&
           !containsEmptyString(prohibitionAccesRights) &&
           !containsEmptyString(prohibitionListAttrNames_B) &&
           !containsEmptyString(prohibitionListAttrValues_B)) {
+
             try {
               await PSC.methods
                 .updateProhibitions(
@@ -866,6 +921,10 @@ function Box2_CreatePolicy(props) {
               props.setMSG(errerr.split("{")[0].trim());
             }
             if (callOK) {
+
+              //Set TIME when we want start count//
+              const startTime = new Date();
+
               await PSC.methods
                 .updateProhibitions(
                   //________Prohibitions__________//
@@ -876,10 +935,24 @@ function Box2_CreatePolicy(props) {
                   prohibitionListAttrValues_B
                 )
                 .send({ from: props.walletAddress });
-                getPSC();
-                getPrivileges();
-                getProhibitions();
-                props.setMSG("Prohibitions up to date!");
+
+              //Set TIME when we want to stop count//
+              const endTime = new Date();
+              //Calc the difference
+              const timeInMilliSec = endTime - startTime;
+              //Convert the time in hours, minutes, seconds, milliseconds
+              const timeInSec = timeInMilliSec / 1000;
+              const hours = Math.floor(timeInSec / 3600);
+              const minutes = Math.floor((timeInSec % 3600) / 60);
+              const seconds = Math.floor(timeInSec % 60);
+              const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+              console.log(`Prohibitions up to date! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
+              getPSC();
+              getPrivileges();
+              getProhibitions();
+              props.setMSG("Prohibitions up to date!");
             }
           } else {
             props.setMSG("Prohibition field empty!");
@@ -971,8 +1044,8 @@ function Box2_CreatePolicy(props) {
 
   useEffect(() => {
     if (privileges !== undefined) {
-      console.log(privileges);
-      console.log("BOX2");
+      //console.log(privileges);
+      //console.log("BOX2");
       props.setprivilegess(privileges);
     }
   }, [privileges]);
@@ -989,8 +1062,8 @@ function Box2_CreatePolicy(props) {
 
     useEffect(() => {
       if (prohibitions !== undefined) {
-        console.log(prohibitions);
-        console.log("BOX2");
+        //console.log(prohibitions);
+        //console.log("BOX2");
         props.setprohibitionss(prohibitions);
       }
     }, [prohibitions]);

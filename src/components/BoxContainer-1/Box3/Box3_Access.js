@@ -10,6 +10,7 @@ function Box3_Access(props) {
   //Before execute access request is there any error?
   const [decision, setDecision] = useState(false);
   const requestDesicion = async () => {
+    console.clear();
     props.setMSG("Wait for answer!");
     if (!props.provider) {
       console.log("Provider not defined Error");
@@ -29,10 +30,27 @@ function Box3_Access(props) {
 
       //If no ERROR execute access request
       if (callOK) {
+        
+        //Set TIME when we want start count//
+        const startTime = new Date();
+
         const decisionValue = await DSC.methods
           .decision(uri, accessright, userAttributeName, userAttributeValue)
           .call({ from: props.walletAddress });
       
+        //Set TIME when we want to stop count//
+        const endTime = new Date();
+        //Calc the difference   
+        const timeInMilliSec = endTime - startTime;
+        //Convert the time in hours, minutes, seconds, milliseconds
+        const timeInSec = timeInMilliSec / 1000;
+        const hours = Math.floor(timeInSec / 3600);
+        const minutes = Math.floor((timeInSec % 3600) / 60);
+        const seconds = Math.floor(timeInSec % 60);
+        const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+        console.log(`Decision is out! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
         setDecision(decisionValue);
       
         if (decisionValue == true) {

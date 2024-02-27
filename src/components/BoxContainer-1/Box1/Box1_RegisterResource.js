@@ -16,11 +16,15 @@ function Box1_RegisterResource(props) {
     }
   }, [props.walletAddress, props.updateCounter]);
 
+  //_____________________________________________ TIME COUNTER __________________________________//
+  const currentTime = new Date();
+
   //_____________________________________________DEPLOY RSC__________________________________//
   //Save deployed RSC address
   const [savRSCaddr, setsavRSCaddr] = useState("");
   //Deploy RSC
   const deployContract = async () => {
+    console.clear();
     if (typeof window.ethereum !== "undefined") {
       props.setMSG("Deploying RSC...");
 
@@ -32,8 +36,8 @@ function Box1_RegisterResource(props) {
       const fromAddress = props.walletAddress;
 
       // Create new instance (With RSC ABI)
-      console.log("ABI: ", abiRSC);
-      console.log("Web3 : ", Web3.eth);
+      //console.log("ABI: ", abiRSC);
+      //console.log("Web3 : ", Web3.eth);
       const contractInstance = new Web3.eth.Contract(abiRSC);
 
       //Set constructor parameter (here not nessecary)
@@ -49,6 +53,9 @@ function Box1_RegisterResource(props) {
           })
           .estimateGas()) * 2;
 
+      //Set TIME when we want start count//
+      const startTime = new Date();
+
       // Deploy Smart Contract
       await contractInstance
         .deploy({
@@ -63,28 +70,63 @@ function Box1_RegisterResource(props) {
           console.log("Transaction Hash:", transactionHash);
         })
         .on("receipt", (receipt) => {
-          console.log("Receipt:", receipt);
-          console.log("Deployed Contract Address:", receipt.contractAddress);
+          //console.log("Receipt:", receipt);
+          //console.log("Deployed Contract Address:", receipt.contractAddress);
           //save deployed RSC address
           setsavRSCaddr(receipt.contractAddress);
         })
         .on("error", (error) => {
           console.error("Error:", error);
         });
+
+      //Set TIME when we want to stop count//
+      const endTime = new Date();
+      //Calc the difference
+      const timeInMilliSec = endTime - startTime;
+      //Convert the time in hours, minutes, seconds, milliseconds
+      const timeInSec = timeInMilliSec / 1000;
+      const hours = Math.floor(timeInSec / 3600);
+      const minutes = Math.floor((timeInSec % 3600) / 60);
+      const seconds = Math.floor(timeInSec % 60);
+      const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+      console.log(`RSC is Deployed!! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
     } else {
       alert("Please install MetaMask and try again.");
     }
     props.setMSG("RSC is Deployed! Please save Deployed RSC!");
   };
+
   //______________________________________________________SAVE RSC_________________________________//
   const saveDeployedRSC = async () => {
+    console.clear();
     if (savRSCaddr) {
       props.setMSG("Saving RSC...");
+
+      //Set TIME when we want start count//
+      const startTime = new Date();
+
       try {
         await DATSC.methods
           .addRSC(savRSCaddr)
           .send({ from: props.walletAddress });
+
+        //Set TIME when we want to stop count//
+        const endTime = new Date();
+        //Calc the difference
+        const timeInMilliSec = endTime - startTime;
+        //Convert the time in hours, minutes, seconds, milliseconds
+        const timeInSec = timeInMilliSec / 1000;
+        const hours = Math.floor(timeInSec / 3600);
+        const minutes = Math.floor((timeInSec % 3600) / 60);
+        const seconds = Math.floor(timeInSec % 60);
+        const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+        console.log(`RSC saved! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
         props.setMSG("RSC saved!");
+
       } catch (error) {
         props.setMSG("Failed to save RSC: " + error.message);
       }
@@ -210,22 +252,23 @@ function Box1_RegisterResource(props) {
 
   //Function to create RSC________________________________________________
   const crRSC = async (uriInput, attributeInput) => {
-    console.log("WalletAddress: ", props.walletAddress);
-    console.log("Provider: ", props.provider.toString());
-    console.log("RSC: ", RSC);
-    console.log("URI: ", uri);
-    for (let i = 0; i < attributeList.length; i++) {
-      console.log(
-        "Attribute ",
-        i,
-        "is: ",
-        attributeList[i].attr,
-        "Value ",
-        i,
-        "is: ",
-        attributeList[i].val
-      );
-    }
+    console.clear();
+    //console.log("WalletAddress: ", props.walletAddress);
+    //console.log("Provider: ", props.provider.toString());
+    //console.log("RSC: ", RSC);
+    //console.log("URI: ", uri);
+    // for (let i = 0; i < attributeList.length; i++) {
+    //   console.log(
+    //     "Attribute ",
+    //     i,
+    //     "is: ",
+    //     attributeList[i].attr,
+    //     "Value ",
+    //     i,
+    //     "is: ",
+    //     attributeList[i].val
+    //   );
+    // }
     if (!props.provider) {
       console.log("Provider not defined Error");
     } else if (!RSC) {
@@ -258,15 +301,34 @@ function Box1_RegisterResource(props) {
         //So we gave two arrays to combine them to one in Solidity
         const attrNames = attributeList.map((item) => item.attr);
         const attrValues = attributeList.map((item) => item.val);
+
+        //Set TIME when we want start count//
+        const startTime = new Date();
+
+
         await RSC.methods
           .executeRSC(uri, attrNames, attrValues)
           .send({ from: props.walletAddress });
+
+        //Set TIME when we want to stop count//
+        const endTime = new Date();
+        //Calc the difference
+        const timeInMilliSec = endTime - startTime;
+        //Convert the time in hours, minutes, seconds, milliseconds
+        const timeInSec = timeInMilliSec / 1000;
+        const hours = Math.floor(timeInSec / 3600);
+        const minutes = Math.floor((timeInSec % 3600) / 60);
+        const seconds = Math.floor(timeInSec % 60);
+        const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+        console.log(`Resource created! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
         //show RSCInstances in Box4
         getRSCInstances();
         //Reset all inputfields
         resetAllInputFields();
 
-        props.setMSG("RSC complete!");
+        props.setMSG("Resource created!");
         //Save created RSC data____________________________________________
         const rscADDR = RSC.options.address;
       }
@@ -277,37 +339,53 @@ function Box1_RegisterResource(props) {
   const [delindex, setDelindex] = useState(0);
   const handleDeleteIndexChange = (event) => {
     setDelindex(parseInt(event.target.value) || 0);
-    console.log(event.target.value);
+    //console.log(event.target.value);
   };
 
   //Delete selected RSC
   //parseInt secures that the delindex is an integer
   const deleteRSC = async (delindex) => {
-    props.setMSG("Please wait... RSC will be Deleted...");
+    console.clear();
+    props.setMSG("Please wait... Resource will be Deleted...");
+    
+    //Set TIME when we want start count//
+    const startTime = new Date();
+
     await RSC.methods
       .deleteRSCInstance(delindex)
       .send({ from: props.walletAddress });
-    console.clear();
+
+    //Set TIME when we want to stop count//
+    const endTime = new Date();
+    //Calc the difference
+    const timeInMilliSec = endTime - startTime;
+    //Convert the time in hours, minutes, seconds, milliseconds
+    const timeInSec = timeInMilliSec / 1000;
+    const hours = Math.floor(timeInSec / 3600);
+    const minutes = Math.floor((timeInSec % 3600) / 60);
+    const seconds = Math.floor(timeInSec % 60);
+    const milliseconds = (timeInMilliSec % 1000) / 1000; 
+
+    console.log(`Resource Deleted! (Executiontime: ${hours} Hours, ${minutes} Minutes, ${seconds} Seconds, ${milliseconds} Milliseconds)`);
+
     //show RSCInstances in Box4
     getRSCInstances();
-    props.setMSG("RSC Deleted");
+    props.setMSG("Resource Deleted!");
   };
 
   //__________________________________________SHOW FINISHED RSC_____________________________
 
   //Get all Attributes
   const getRSCInstances = async () => {
-    console.clear();
     const rscInstances = await RSC.methods
       .getRSCInstances()
       .call({ from: props.walletAddress });
 
-    for (let i = 0; i < rscInstances.length; i++) {
-      console.log(rscInstances[i]);
-    }
+    // for (let i = 0; i < rscInstances.length; i++) {
+    //   console.log(rscInstances[i]);
+    // }
     //Send RSC --> BoxContainer1
     props.chngRSCInstance(rscInstances);
-    props.setMSG("Look in Consol");
   };
 
   //________________________Store RSC Address in DATSC_________________________________________
