@@ -8,7 +8,7 @@ Ensuring authorized data access is crucial for maintaining the confidentiality a
 
 About the Project
 -------
-This project delves into the study and analysis of the Next Generation Access Control (NGAC) access control model. Unlike other models where authorization and access policies are typically expressed using verbal rules, NGAC policies are developed using relations based on assignments, associations, prohibitions, and obligations. NGAC is characterized by its flexibility and can be utilized in a manner that allows or denies access based not only on the attributes of the objects but also on additional conditions such as time, location, etc.
+This project delves into the study and analysis of the Next Generation Access Control (NGAC) access control model. Unlike other models where authorization and access policies are typically expressed using verbal rules, NGAC policies are developed using relations based on assignments, associations and prohibitions. NGAC is characterized by its flexibility and can be utilized in a manner that allows or denies access based not only on the attributes of the objects but also on additional conditions such as time, location, etc.
 
 Furthermore, the potential of developing decentralized applications leveraging blockchain technologies, especially those provided by the Ethereum system, is explored.
 
